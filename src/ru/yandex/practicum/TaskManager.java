@@ -69,11 +69,17 @@ public class TaskManager {
         }
     }
 
-    public void getAllTasks() {
-        getAllSimpleTasks();
-        getAllEpics();
+    public Subtask getSubtaskById(int subtaskId) {               //метод для получения подзадачи по id
+        return subtasks.get(subtaskId);
     }
 
+    public Epic getEpicById(int epicId) {                        //метод для получения эпика по id
+        return epics.get(epicId);
+    }
+
+    public SimpleTask getSimpleTaskById(int simpleTaskId) {      //метод для получения задачи по id
+        return simpleTasks.get(simpleTaskId);
+    }
 
     public ArrayList<SimpleTask> getAllSimpleTasks() {
         return new ArrayList<>(simpleTasks.values());
@@ -83,9 +89,10 @@ public class TaskManager {
         return new ArrayList<>(epics.values());
     }
 
-    public ArrayList<Integer> getAllSubtask(int epicId) {
-        return new ArrayList<Integer>(epics.get(epicId).getSubtasksIds());
+    public ArrayList<Integer> getAllSubtaskByEpic(int epicId) {
+        return new ArrayList<>(epics.get(epicId).getSubtasksIds());
     }
+
 
     public void updateSubtask(int subtaskId) {
 

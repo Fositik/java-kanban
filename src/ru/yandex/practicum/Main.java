@@ -6,37 +6,39 @@ import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
-
         TaskManager taskManager = new TaskManager();
+        //Задача 1
         SimpleTask takeExams = new SimpleTask("Сдать Экзамены", taskManager.nextId,
                 "сдать экзамены на 5", Status.NEW);
         taskManager.addSimpleTask(takeExams);
-
+        //Задача 2
         SimpleTask pickUpTheChild = new SimpleTask("Забрать ребенка", taskManager.nextId,
                 "Забрать Петю из детского сада", Status.NEW);
         taskManager.addSimpleTask(pickUpTheChild);
 
-        taskManager.getAllSimpleTasks();
-
+        System.out.println("Список всех задач: " + taskManager.getAllSimpleTasks());
+        //Задача 3
         Epic buyProducts = new Epic("Купить продукты", taskManager.nextId, Status.NEW);
         taskManager.addEpic(buyProducts);
+
+        System.out.println(taskManager.getSimpleTaskById(2));
 
         Subtask milk = new Subtask("Milk", taskManager.nextId, "Fat content 3.2", 3, Status.NEW);
         taskManager.addSubtask(milk, buyProducts);
         Subtask bread = new Subtask("Bread", taskManager.nextId, "wheat", 3, Status.IN_PROGRESS);
         taskManager.addSubtask(bread, buyProducts);
 
+
         Epic doTheLessons = new Epic("Сделать уроки", taskManager.nextId, Status.NEW);
         taskManager.addEpic(doTheLessons);
-
         Subtask biology = new Subtask("Biology", taskManager.nextId,
                 "cell division", 6, Status.NEW);
         taskManager.addSubtask(biology, doTheLessons);
         Subtask math = new Subtask("Math", taskManager.nextId, "to solve the task", 6, Status.NEW);
         taskManager.addSubtask(math, doTheLessons);
 
-        taskManager.getAllTasks();
-
+        System.out.println("Список всех эпиков: " + taskManager.getAllEpics());
+        System.out.println("Список поздадач для эпика id = 3: "+taskManager.getAllSubtaskByEpic(3));
         taskManager.deletingAllTasks();
 
 

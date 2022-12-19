@@ -24,4 +24,14 @@ public class SimpleTask extends Task {
     public int hashCode() {
         return Objects.hash(super.hashCode(), description);
     }
+
+    @Override
+    public String toString() {
+        return "SimpleTask{" +
+                "description='" + description + '\'' +
+                ", name='" + name + '\'' +
+                ", id=" + id +
+                ", status=" + status +
+                "}";
+    }
 }
