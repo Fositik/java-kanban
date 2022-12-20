@@ -1,6 +1,5 @@
 package ru.yandex.practicum;
 
-
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -81,25 +80,66 @@ public class TaskManager {
         return simpleTasks.get(simpleTaskId);
     }
 
-    public ArrayList<SimpleTask> getAllSimpleTasks() {
+    public ArrayList<SimpleTask> getAllSimpleTasks() {           //метод для получения списка всех задач
         return new ArrayList<>(simpleTasks.values());
     }
 
-    public ArrayList<Epic> getAllEpics() {
+    public ArrayList<Epic> getAllEpics() {                       //метод для получения списка всех эпиков
         return new ArrayList<>(epics.values());
     }
 
-    public ArrayList<Integer> getAllSubtaskByEpic(int epicId) {
+    public ArrayList<Integer> getAllSubtasksByEpic(int epicId) { //метод для получения id подзадач эпика
         return new ArrayList<>(epics.get(epicId).getSubtasksIds());
     }
 
-
-    public void updateSubtask(int subtaskId) {
-
+    public void removeSimbletaskById(int simpleTaskId) { //метод для удаления задачи по id
+        simpleTasks.remove(simpleTaskId);
+        System.out.println("Задача под id= " + simpleTaskId + " была успешно удалена!");
     }
 
+    public void removeEpicById(int epicId) {  //метод для удаления эпика по id-->вместе с эпиковм удаляются все подзадачи
+        epics.get(epicId).getSubtasksIds().clear();
+        epics.remove(epicId);
+        System.out.println("Эпик под id= " + epicId + " и все его подзадачи успешно удалены!");
+    }
 
-    public void deletingAllTasks() {
+    public void removeSubtaskById(int subtaskId) { //метод для удаления подзадачи по id
+        subtasks.remove(subtaskId);
+    }
+
+    public SimpleTask updateSimpleTaskById(int taskId, SimpleTask simpleTask) {
+        if (simpleTasks.containsKey(taskId)) {
+            SimpleTask value = simpleTasks.get(taskId);
+            value.setName(simpleTask.getName());
+            value.setStatus(simpleTask.getStatus());
+            value.setDescription(simpleTask.getDescription());
+            return value;
+        } else {
+            System.out.println("Задачи под id = " + taskId + " не существует!");
+            return null;
+        }
+    }
+
+    public Epic updateSimpleTaskById(int taskId, Epic epic) {
+        if (epics.containsKey(taskId)) {
+            Epic value = epics.get(taskId);
+            value.setName(epic.getName());
+            value.setStatus(epic.getStatus());
+            return value;
+        } else {
+            System.out.println("Эпика под id = " + taskId + " не существует!");
+            return null;
+        }
+    }
+
+    public void updateSubtask(int taskId, Subtask subtask) {
+        if (subtasks.containsKey(taskId)) {
+    Subtask value =subtasks.get(taskId);
+    
+        }
+    }
+
+    public void removeAllTasks() {
         simpleTasks.clear();
         epics.clear();
         subtasks.clear();

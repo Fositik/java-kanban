@@ -20,9 +20,6 @@ public class Epic extends Task {
         return subtasksIds;
     }
 
-    public void setSubtasksIds(ArrayList<Integer> subtasksIds) {
-        this.subtasksIds = subtasksIds;
-    }
 
     @Override
     public boolean equals(Object o) {

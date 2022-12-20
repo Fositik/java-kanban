@@ -11,6 +11,14 @@ public class SimpleTask extends Task {
         this.description = description;
     }
 
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -28,9 +36,9 @@ public class SimpleTask extends Task {
     @Override
     public String toString() {
         return "SimpleTask{" +
-                "description='" + description + '\'' +
                 ", name='" + name + '\'' +
                 ", id=" + id +
+                "description='" + description + '\'' +
                 ", status=" + status +
                 "}";
     }
