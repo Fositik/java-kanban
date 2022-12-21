@@ -1,14 +1,10 @@
 package ru.yandex.practicum;
-
 import java.util.Objects;
-
-import static ru.yandex.practicum.Status.NEW;
 
 public class Task {             //общими чертами для всех задач являются:
     protected String name;      //имя самой задачи
     protected int id;           //уникальный идентификатор, по которому можно найти и управлять задачей
     protected Status status;    //текущий статус задачи
-
 
     public Task(String name, int id, Status status) {
         this.name = name;

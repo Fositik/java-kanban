@@ -1,11 +1,10 @@
 package ru.yandex.practicum;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 
 public class TaskManager {
 
-    protected int nextId = 1;    //Счетчик для идентификаторов задач
+    protected int nextId = 1;                                               //Счетчик для идентификаторов задач
     protected HashMap<Integer, SimpleTask> simpleTasks = new HashMap<>();   //хеш-таблица для хранения списка просых задач
     protected HashMap<Integer, Epic> epics = new HashMap<>();               //хеш-таблица для хранения списка эпиков
     protected HashMap<Integer, Subtask> subtasks = new HashMap<>();         //хеш-таблица для хранения списка подзадач
@@ -107,7 +106,7 @@ public class TaskManager {
         subtasks.remove(subtaskId);
     }
 
-    public SimpleTask updateSimpleTaskById(int taskId, SimpleTask simpleTask) {
+    public SimpleTask updateSimpleTaskById(int taskId, SimpleTask simpleTask) {     //метод для обновления задачи по id
         if (simpleTasks.containsKey(taskId)) {
             SimpleTask value = simpleTasks.get(taskId);
             value.setName(simpleTask.getName());
@@ -120,9 +119,9 @@ public class TaskManager {
         }
     }
 
-    public Epic updateSimpleTaskById(int taskId, Epic epic) {
+    public Epic updateSimpleTaskById(int taskId, Epic epic) {   //метод для обновления задачи по id
         if (epics.containsKey(taskId)) {
-            Epic value = epics.get(taskId);
+            Epic value = epics.get(taskId);                     //id остается прежним
             value.setName(epic.getName());
             value.setStatus(epic.getStatus());
             return value;
@@ -132,17 +131,23 @@ public class TaskManager {
         }
     }
 
-    public void updateSubtask(int taskId, Subtask subtask) {
-        if (subtasks.containsKey(taskId)) {
-    Subtask value =subtasks.get(taskId);
-    
+    public Subtask updateSubtask(int taskId, Subtask subtask) {    //метод для обновления подзадачи по id
+        if (subtasks.containsKey(taskId)) {                     //id подзадачи остается прежним
+            Subtask value = subtasks.get(taskId);               //id эпика тоже остается прежним
+            value.epicId=subtask.getEpicId();
+            value.setDescription(subtask.getDescription());
+            value.setName(subtask.getName());
+            value.setStatus(subtask.getStatus());
+            return value;
+        } else {
+            System.out.println("Подзадачи под id = " + taskId + " не существует!");
+            return null;
         }
     }
 
-    public void removeAllTasks() {
+    public void removeAllTasks() {        //метод очищает все хеш-таблицы, то есть, удаляет все задачи/эпики/подзадачи
         simpleTasks.clear();
         epics.clear();
         subtasks.clear();
     }
-
 }

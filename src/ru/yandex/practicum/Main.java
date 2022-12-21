@@ -1,9 +1,5 @@
 package ru.yandex.practicum;
 
-import ru.yandex.practicum.Task;
-
-import java.util.Scanner;
-
 public class Main {
     public static void main(String[] args) {
         TaskManager taskManager = new TaskManager();
@@ -23,7 +19,7 @@ public class Main {
         taskManager.removeSimbletaskById(1);
         //Получаем список всех задач, смотрим изменения
         System.out.println("Список всех задач: " + taskManager.getAllSimpleTasks());
-        SimpleTask updateTheTask = taskManager.updateSimpleTaskById(2,new SimpleTask("Task",1,"Update Task",Status.NEW));
+        taskManager.updateSimpleTaskById(2, new SimpleTask("Task", 1, "Update Task", Status.NEW));
         //Эпик id 3
         Epic buyProducts = new Epic("Купить продукты", taskManager.nextId, Status.NEW);
         taskManager.addEpic(buyProducts);
@@ -35,6 +31,8 @@ public class Main {
         Subtask bread = new Subtask("Bread", taskManager.nextId, "wheat", 3, Status.IN_PROGRESS);
         taskManager.addSubtask(bread, buyProducts);
 
+        taskManager.updateSubtask(4,new Subtask("UpdateSub",1,"SubWasUpdated",
+                1,Status.IN_PROGRESS));
         //Получаем список всех подзадач эпика id 3
         System.out.println("Список поздадач для эпика id = 3: " + taskManager.getAllSubtasksByEpic(3));
         //Получаем подзадачу id 4 эпикка id 3
@@ -63,7 +61,5 @@ public class Main {
         taskManager.removeAllTasks();
         System.out.println(taskManager.getAllSimpleTasks());
         System.out.println(taskManager.getAllEpics());
-
-
     }
 }

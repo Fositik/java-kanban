@@ -1,6 +1,4 @@
 package ru.yandex.practicum;
-
-
 import java.util.Objects;
 
 public class SimpleTask extends Task {

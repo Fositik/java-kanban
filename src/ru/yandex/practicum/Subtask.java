@@ -1,5 +1,4 @@
 package ru.yandex.practicum;
-
 import java.util.Objects;
 
 public class Subtask extends Task {
@@ -16,7 +15,17 @@ public class Subtask extends Task {
         return epicId;
     }
 
+    public String getDescription() {
+        return description;
+    }
 
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public void setEpicId(int epicId) {
+        this.epicId = epicId;
+    }
 
     @Override
     public boolean equals(Object o) {

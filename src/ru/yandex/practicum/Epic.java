@@ -1,9 +1,6 @@
 package ru.yandex.practicum;
-
-
 import java.util.ArrayList;
 import java.util.Objects;
-
 
 public class Epic extends Task {
     protected ArrayList<Integer> subtasksIds = new ArrayList<>();  //массив для хранения id подзадач____Таким образом мы связываем епики с подзадачами
@@ -20,7 +17,6 @@ public class Epic extends Task {
         return subtasksIds;
     }
 
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -34,5 +30,4 @@ public class Epic extends Task {
     public int hashCode() {
         return Objects.hash(super.hashCode(), subtasksIds);
     }
-
 }
