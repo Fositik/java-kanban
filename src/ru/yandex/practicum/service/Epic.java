@@ -1,12 +1,13 @@
-package ru.yandex.practicum;
+package ru.yandex.practicum.service;
+
 import java.util.ArrayList;
 import java.util.Objects;
 
 public class Epic extends Task {
     protected ArrayList<Integer> subtasksIds = new ArrayList<>();  //массив для хранения id подзадач____Таким образом мы связываем епики с подзадачами
 
-    public Epic(String name, int id, Status status) {
-        super(name, id, status);
+    public Epic(int id, String name, String description, Status status) {
+        super(id, name, description, status);
     }
 
     public void addSubtask(int subtaskId) {

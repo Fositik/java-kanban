@@ -1,14 +1,16 @@
-package ru.yandex.practicum;
-import java.util.Objects;
+package ru.yandex.practicum.service;
 
+import java.util.Objects;
 public class Task {             //общими чертами для всех задач являются:
     protected String name;      //имя самой задачи
     protected int id;           //уникальный идентификатор, по которому можно найти и управлять задачей
+    protected String description;
     protected Status status;    //текущий статус задачи
 
-    public Task(String name, int id, Status status) {
-        this.name = name;
+    public Task(int id, String name, String description, Status status) {
         this.id = id;
+        this.name = name;
+        this.description = description;
         this.status = status;
     }
 
@@ -36,24 +38,33 @@ public class Task {             //общими чертами для всех з
         this.status = status;
     }
 
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Task task = (Task) o;
-        return id == task.id && name.equals(task.name) && status == task.status;
+        return id == task.id && name.equals(task.name) && description.equals(task.description) && status == task.status;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, id, status);
+        return Objects.hash(id, name, description, status);
     }
 
     @Override
     public String toString() {
         return "Task{" +
-                "name='" + name + '\'' +
-                ", id=" + id +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
                 ", status=" + status +
                 '}';
     }

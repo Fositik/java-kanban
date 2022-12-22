@@ -1,17 +1,18 @@
-package ru.yandex.practicum;
+package ru.yandex.practicum.service;
+
 import java.util.Objects;
 
 public class Subtask extends Task {
-    protected String description;   //у подзадач есть описание
-    protected int epicId;           //переменная для хранения идентификатора эпика
+    private int epicId;//переменная для хранения идентификатора эпика
+    private Epic epic;
 
-    public Subtask(String name, int id, String description, int epicId, Status status) {   //конструктор для подзадач
-        super(name, id, status);
-        this.description = description;
+    public Subtask(int id, String name, String description, Status status, int epicId, Epic epic) {
+        super(id, name, description, status);
         this.epicId = epicId;
+        this.epic = epic;
     }
 
-    public int getEpicId(){     //геттер для id эпика
+    public int getEpicId() {     //геттер для id эпика
         return epicId;
     }
 
@@ -25,6 +26,14 @@ public class Subtask extends Task {
 
     public void setEpicId(int epicId) {
         this.epicId = epicId;
+    }
+
+    public Epic getEpic() {
+        return epic;
+    }
+
+    public void setEpic(Epic epic) {
+        this.epic = epic;
     }
 
     @Override

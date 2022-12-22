@@ -1,19 +1,24 @@
-package ru.yandex.practicum;
+package ru.yandex.practicum.model;
+
+import ru.yandex.practicum.service.Epic;
+import ru.yandex.practicum.service.Status;
+import ru.yandex.practicum.service.Subtask;
+import ru.yandex.practicum.service.Task;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 
 public class TaskManager {
-
     protected int nextId = 1;                                               //Счетчик для идентификаторов задач
-    protected HashMap<Integer, SimpleTask> simpleTasks = new HashMap<>();   //хеш-таблица для хранения списка просых задач
+    protected HashMap<Integer, Task> simpleTasks = new HashMap<>();   //хеш-таблица для хранения списка просых задач
     protected HashMap<Integer, Epic> epics = new HashMap<>();               //хеш-таблица для хранения списка эпиков
     protected HashMap<Integer, Subtask> subtasks = new HashMap<>();         //хеш-таблица для хранения списка подзадач
 
-    public int addSimpleTask(SimpleTask simpleTask) {                       //метод для добавления простой задачи
-        simpleTask.setId(nextId++);
-        simpleTasks.put(simpleTask.getId(), simpleTask);
-        System.out.println("Задача успешно создана! ID = " + simpleTask.getId());
-        return simpleTask.getId();
+    public int addSimpleTask(Task task) {                       //метод для добавления простой задачи
+        task.setId(nextId++);
+        simpleTasks.put(task.getId(), task);
+        System.out.println("Задача успешно создана! ID = " + task.getId());
+        return task.getId();
     }
 
     public int addEpic(Epic epic) {      //метод для добавления эпика
@@ -23,16 +28,15 @@ public class TaskManager {
         return epic.getId();
     }
 
-    public int addSubtask(Subtask subtask, Epic epic) {   //метод для добавления подзадачи
-        subtask.setId(nextId++);                          //задаем уникальный id подзадаче
-        subtasks.put(subtask.getId(), subtask);           //добавляем подзадачу в список подзадач
-        if (subtask.getEpicId() == epic.getId()) {        //если epicId подзадачи совпадает с существующим эпиком
-            epic.addSubtask(subtask.getId());             //привязываем подзадачу к эпику
+    public int addSubtask(Subtask subtask) {   //метод для добавления подзадачи
+        subtask.setId(nextId++);        //задаем уникальный id подзадаче
+        if (subtasks.containsKey(subtask.getId())) {        //если epicId подзадачи совпадает с существующ
+            System.out.println("Подзадача с id " + subtask.getId() + " уже существует!");
         } else {
-            System.out.println("Эпика под id = " + subtask.getEpicId() + " не существует!");
+            subtasks.put(subtask.getId(), subtask);           //добавляем подзадачу в список подзадач
+            sincEpic(subtask.getEpicId());
+            System.out.println("Подзадача к эпику id = " + subtask.getEpicId() + " успешно создана!");
         }
-        sincEpic(subtask.getEpicId());
-        System.out.println("Подзадача к эпику id = " + subtask.getEpicId() + " успешно создана!");
         return subtask.getId();
     }
 
@@ -75,11 +79,11 @@ public class TaskManager {
         return epics.get(epicId);
     }
 
-    public SimpleTask getSimpleTaskById(int simpleTaskId) {      //метод для получения задачи по id
+    public Task getSimpleTaskById(int simpleTaskId) {      //метод для получения задачи по id
         return simpleTasks.get(simpleTaskId);
     }
 
-    public ArrayList<SimpleTask> getAllSimpleTasks() {           //метод для получения списка всех задач
+    public ArrayList<Task> getAllSimpleTasks() {           //метод для получения списка всех задач
         return new ArrayList<>(simpleTasks.values());
     }
 
@@ -106,12 +110,12 @@ public class TaskManager {
         subtasks.remove(subtaskId);
     }
 
-    public SimpleTask updateSimpleTaskById(int taskId, SimpleTask simpleTask) {     //метод для обновления задачи по id
+    public Task updateSimpleTaskById(int taskId, Task task) {     //метод для обновления задачи по id
         if (simpleTasks.containsKey(taskId)) {
-            SimpleTask value = simpleTasks.get(taskId);
-            value.setName(simpleTask.getName());
-            value.setStatus(simpleTask.getStatus());
-            value.setDescription(simpleTask.getDescription());
+            Task value = simpleTasks.get(taskId);
+            value.setName(task.getName());
+            value.setStatus(task.getStatus());
+            value.setDescription(task.getDescription());
             return value;
         } else {
             System.out.println("Задачи под id = " + taskId + " не существует!");
@@ -134,7 +138,7 @@ public class TaskManager {
     public Subtask updateSubtask(int taskId, Subtask subtask) {    //метод для обновления подзадачи по id
         if (subtasks.containsKey(taskId)) {                     //id подзадачи остается прежним
             Subtask value = subtasks.get(taskId);               //id эпика тоже остается прежним
-            value.epicId=subtask.getEpicId();
+            value.getEpic().equals(subtask.getEpic());
             value.setDescription(subtask.getDescription());
             value.setName(subtask.getName());
             value.setStatus(subtask.getStatus());
@@ -145,9 +149,16 @@ public class TaskManager {
         }
     }
 
-    public void removeAllTasks() {        //метод очищает все хеш-таблицы, то есть, удаляет все задачи/эпики/подзадачи
+    public void removeAllSimpleTasks() {        //методs очищают все хеш-таблицы, то есть, удаляют все задачи/эпики/подзадачи
         simpleTasks.clear();
-        epics.clear();
+    }
+
+    public void removeAllSubtasks() {
+
         subtasks.clear();
+    }
+
+    public void removeAllEpics() {
+        epics.clear();
     }
 }
