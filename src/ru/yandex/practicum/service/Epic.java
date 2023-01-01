@@ -4,7 +4,9 @@ import java.util.ArrayList;
 import java.util.Objects;
 
 public class Epic extends Task {
-    protected ArrayList<Integer> subtasksIds = new ArrayList<>();  //массив для хранения id подзадач____Таким образом мы связываем епики с подзадачами
+
+    //массив для хранения id подзадач____Таким образом мы связываем епики с подзадачами
+    protected ArrayList<Integer> subtasksIds = new ArrayList<>();
 
     public Epic(int id, String name, String description, Status status) {
         super(id, name, description, status);

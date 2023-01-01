@@ -18,3 +18,25 @@ Repository for homework project.
 ++если у эпика нет подзадач или все они имеют статус NEW, то статус должен быть NEW.
 ++если все подзадачи имеют статус DONE, то и эпик считается завершённым — со статусом DONE.
 ++во всех остальных случаях статус должен быть IN_PROGRESS.
+
+Цели на следующий спринт:
+- Попробовать использовать static переменную, которая будет увеличивать значение на 1 при каждом новом создании объекта класса
+``` public class Practicum {
+    public static void main(String[] args) {
+
+        Bird tweety = new Bird();
+        Bird pepper = new Bird();
+        Bird flossie = new Bird();
+    }
+}
+
+class Bird {
+
+    private static int count = 0;
+
+    Bird() {
+        count++;
+        System.out.println("Количество созданных объектов: " + count);
+    }
+}
+```

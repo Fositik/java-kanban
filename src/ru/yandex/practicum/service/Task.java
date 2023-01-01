@@ -68,4 +68,6 @@ public class Task {             //общими чертами для всех з
                 ", status=" + status +
                 '}';
     }
+
+
 }

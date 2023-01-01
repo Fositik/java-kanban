@@ -3,7 +3,8 @@ package ru.yandex.practicum.service;
 import java.util.Objects;
 
 public class Subtask extends Task {
-    private int epicId;//переменная для хранения идентификатора эпика
+    //переменная для хранения идентификатора эпика
+    private int epicId;
     private Epic epic;
 
     public Subtask(int id, String name, String description, Status status, int epicId, Epic epic) {
@@ -12,7 +13,8 @@ public class Subtask extends Task {
         this.epic = epic;
     }
 
-    public int getEpicId() {     //геттер для id эпика
+    //геттер для id эпика
+    public int getEpicId() {
         return epicId;
     }
 
@@ -53,7 +55,7 @@ public class Subtask extends Task {
     @Override
     public String toString() {
         return "Subtask{" +
-                ", epicId=" + epicId +
+                "epicId=" + epicId +
                 ", name='" + name + '\'' +
                 "description='" + description + '\'' +
                 ", id=" + id +
