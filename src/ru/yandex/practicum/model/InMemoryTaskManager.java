@@ -1,6 +1,7 @@
 package ru.yandex.practicum.model;
 
 import ru.yandex.practicum.service.Epic;
+import ru.yandex.practicum.service.Status;
 import ru.yandex.practicum.service.Subtask;
 import ru.yandex.practicum.service.Task;
 
@@ -11,7 +12,7 @@ import java.util.HashMap;
 public class InMemoryTaskManager implements TaskManager {
     HistoryManager historyManager = Managers.getDefaultHistory();
     //Счетчик для идентификаторов задач
-    protected int nextId = 1;
+    private int nextId = 1;
     //хеш-таблица для хранения списка просых задач
     protected HashMap<Integer, Task> simpleTasks = new HashMap<>();
     //хеш-таблица для хранения списка эпиков
@@ -161,6 +162,10 @@ public class InMemoryTaskManager implements TaskManager {
             value.setDescription(subtask.getDescription());
             value.setName(subtask.getName());
             value.setStatus(subtask.getStatus());
+            epics.get(value.getEpic().getId()).checkEpicStatusDone();
+            if (!epics.get(value.getEpic().getId()).getStatus().equals(Status.IN_PROGRESS)) {
+                epics.get(value.getEpic().getId()).checkEpicStatusInProgresss();
+            }
             return value;
         } else {
             System.out.println("Подзадачи под id = " + taskId + " не существует!");
