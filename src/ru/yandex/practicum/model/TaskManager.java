@@ -17,11 +17,6 @@ public interface TaskManager {
     //Метод для добавления подзадачи
     int addSubtask(Subtask subtask, Epic epic);
 
-    //Метод для проверки статуса эпика на InProgress
-    void checkEpicStatusInProgresss(int epicId);
-
-    //Метод для проверки статуса 'пика на Done
-    void checkEpicStatusDone(int epicId);
 
     //Метод для нахождения подзадачи по id
     Subtask getSubtaskById(int subtaskId);
@@ -37,7 +32,7 @@ public interface TaskManager {
     ArrayList<Epic> getAllEpics();
 
     //Метод для получения списка подзадач
-    ArrayList<Integer> getAllSubtasksByEpic(int epicId);
+    ArrayList<Subtask> getAllSubtasksByEpic(int epicId);
 
     //Метод для удаления простой задачи по id
     void removeSimbletaskById(int simpleTaskId);

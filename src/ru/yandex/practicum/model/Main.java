@@ -36,15 +36,15 @@ public class Main {
         System.out.println("Задача под id= 2: " + inMemoryTaskManager.getSimpleTaskById(2));                                            //1
         //Подзадача id 4, эпик id 3
         Subtask milk = new Subtask(inMemoryTaskManager.nextId, "Milk", "Fat content 3.2", Status.NEW,
-                3, buyProducts);
+                 buyProducts);
         inMemoryTaskManager.addSubtask(milk, buyProducts);
         //Подзадача id 5, эпик id 3
         Subtask bread = new Subtask(inMemoryTaskManager.nextId, "Bread", "wheat", Status.IN_PROGRESS,
-                3, buyProducts);
+                 buyProducts);
         inMemoryTaskManager.addSubtask(bread, buyProducts);
         System.out.println("Список всех эпиков: " + inMemoryTaskManager.getAllEpics());
         inMemoryTaskManager.updateSubtask(4, new Subtask(1, "UpdateSub", "SubWasUpdated",
-                Status.IN_PROGRESS, 1, buyProducts));
+                Status.IN_PROGRESS,  buyProducts));
         //Получаем список всех подзадач эпика id 3
         System.out.println("Список поздадач для эпика id = 3: " + inMemoryTaskManager.getAllSubtasksByEpic(3));
         //Получаем подзадачу id 4 эпика id 3
@@ -55,10 +55,10 @@ public class Main {
         inMemoryTaskManager.addEpic(doTheLessons);
         //Подзадача id 7, эпик id 6
         Subtask biology = new Subtask(inMemoryTaskManager.nextId, "Biology",
-                "cell division", Status.NEW, 6, doTheLessons);
+                "cell division", Status.NEW,  doTheLessons);
         inMemoryTaskManager.addSubtask(biology, doTheLessons);
         //Подзадача id 8, эпик id 6
-        Subtask math = new Subtask(inMemoryTaskManager.nextId, "Math", "to solve the task", Status.NEW, 6, doTheLessons);
+        Subtask math = new Subtask(inMemoryTaskManager.nextId, "Math", "to solve the task", Status.NEW,  doTheLessons);
         inMemoryTaskManager.addSubtask(math, doTheLessons);
 
         ////Получаем список всех эпиков

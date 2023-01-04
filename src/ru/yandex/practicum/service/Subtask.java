@@ -3,19 +3,17 @@ package ru.yandex.practicum.service;
 import java.util.Objects;
 
 public class Subtask extends Task {
-    //переменная для хранения идентификатора эпика
-    private int epicId;
+
+   /* private int epicId;  //переменная больше не нужна
+   Так как раньше мы передавали в качестве параметра и epicId и сам класс Epic, что было излишним
+   Было решено оставить только Epic
+   Соответственно, код был переработан
+    */
     private Epic epic;
 
-    public Subtask(int id, String name, String description, Status status, int epicId, Epic epic) {
+    public Subtask(int id, String name, String description, Status status,  Epic epic) {
         super(id, name, description, status);
-        this.epicId = epicId;
         this.epic = epic;
-    }
-
-    //геттер для id эпика
-    public int getEpicId() {
-        return epicId;
     }
 
     public String getDescription() {
@@ -24,10 +22,6 @@ public class Subtask extends Task {
 
     public void setDescription(String description) {
         this.description = description;
-    }
-
-    public void setEpicId(int epicId) {
-        this.epicId = epicId;
     }
 
     public Epic getEpic() {
@@ -44,19 +38,18 @@ public class Subtask extends Task {
         if (o == null || getClass() != o.getClass()) return false;
         if (!super.equals(o)) return false;
         Subtask subtask = (Subtask) o;
-        return epicId == subtask.epicId && description.equals(subtask.description);
+        return epic.equals(subtask.epic);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), description, epicId);
+        return Objects.hash(super.hashCode(), epic);
     }
 
     @Override
     public String toString() {
         return "Subtask{" +
-                "epicId=" + epicId +
-                ", name='" + name + '\'' +
+                "name='" + name + '\'' +
                 "description='" + description + '\'' +
                 ", id=" + id +
                 ", status=" + status +

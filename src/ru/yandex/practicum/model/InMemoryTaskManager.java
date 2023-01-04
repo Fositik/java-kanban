@@ -1,7 +1,6 @@
 package ru.yandex.practicum.model;
 
 import ru.yandex.practicum.service.Epic;
-import ru.yandex.practicum.service.Status;
 import ru.yandex.practicum.service.Subtask;
 import ru.yandex.practicum.service.Task;
 
@@ -51,54 +50,11 @@ public class InMemoryTaskManager implements TaskManager {
             //добавляем подзадачу в список подзадач
             subtasks.put(subtask.getId(), subtask);
             //Добавляем подзадачу в список SubttasksIds для того, чтобы иметь возможность получать список подзадач эпика
-            epics.get(epic.getId()).getSubtasksIds().add(subtask.getId());
-            sincEpic(subtask.getEpicId());
-            System.out.println("Подзадача к эпику id = " + subtask.getEpicId() + " успешно создана!");
+            epics.get(epic.getId()).getSubtasks().add(subtask);
+
+            System.out.println("Подзадача к эпику id = " + subtask.getId() + " успешно создана!");
         }
         return subtask.getId();
-    }
-    //метод проверяет статусы подзадач
-    private void sincEpic(int epicId) {
-        //и синхронихирует статусы эпика с и подзадач
-        Epic epic = epics.get(epicId);
-        checkEpicStatusInProgresss(epicId);
-        checkEpicStatusDone(epicId);
-    }
-
-    @Override
-    //проверяем статусы подзадач на IN_PROGRESS
-    public void checkEpicStatusInProgresss(int epicId) {
-        Epic epic = epics.get(epicId);
-        for (Integer subtasksId : epic.getSubtasksIds()) {
-            //если хотя бы одна задача имеет статус IN_PROGRESS
-            if (subtasks.get(subtasksId).getStatus().equals(Status.IN_PROGRESS)) {
-                //то и весь эпик получает такой статус
-                epics.get(epicId).setStatus(Status.IN_PROGRESS);
-            }
-        }
-    }
-
-    @Override
-    //проверяем статусы подзадач на DONE
-    public void checkEpicStatusDone(int epicId) {
-        //булевая переменная для проверки статуса эпика на DONE
-        boolean checkStatus = true;
-        Epic epic = epics.get(epicId);
-        //пробегаемся по всем подзадачам
-        for (Integer subtasksId : epic.getSubtasksIds()) {
-            //если подзадча имеет статус отличный от DONE
-            if (!subtasks.get(subtasksId).getStatus().equals(Status.DONE)) {
-                //то статус эпика не DONE
-                checkStatus = false;
-            }
-            break;
-        }
-        //если же, все задачи имеют статус DONE
-        if (checkStatus) {
-            //то статус эпика тоже считается таким же
-            epics.get(epicId).setStatus(Status.DONE);
-            System.out.println("Эпик под id = " + epics.get(epicId) + "выполнен!");
-        }
     }
 
     @Override
@@ -139,8 +95,8 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     //метод для получения id подзадач эпика
-    public ArrayList<Integer> getAllSubtasksByEpic(int epicId) {
-        return new ArrayList<>(epics.get(epicId).getSubtasksIds());
+    public ArrayList<Subtask> getAllSubtasksByEpic(int epicId) {
+        return new ArrayList<>(epics.get(epicId).getSubtasks());
     }
 
     @Override
@@ -153,7 +109,7 @@ public class InMemoryTaskManager implements TaskManager {
     @Override
     //метод для удаления эпика по id-->вместе с эпиковм удаляются все подзадачи
     public void removeEpicById(int epicId) {
-        epics.get(epicId).getSubtasksIds().clear();
+        epics.get(epicId).getSubtasks().clear();
         epics.remove(epicId);
         System.out.println("Эпик под id= " + epicId + " и все его подзадачи успешно удалены!");
     }
@@ -220,7 +176,6 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public void removeAllSubtasks() {
-
         subtasks.clear();
     }
 
