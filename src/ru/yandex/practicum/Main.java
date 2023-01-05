@@ -8,9 +8,6 @@ import ru.yandex.practicum.service.Task;
 
 public class Main {
     public static void main(String[] args) {
-
-         int id=1;
-         
         InMemoryTaskManager inMemoryTaskManager = new InMemoryTaskManager();
         TaskManager taskManager = Managers.getDefault();
         InMemoryHistoryManager inMemoryHistoryManager = new InMemoryHistoryManager();
@@ -19,64 +16,60 @@ public class Main {
         //Задача id 1
         Task takeExams = new Task("Сдать Экзамены");
         inMemoryTaskManager.addSimpleTask(takeExams);
-
-        System.out.println("Обновляем задачу под id "+takeExams.getId()+" : "
-                + inMemoryTaskManager.updateSimpleTaskById(1,new Task("Сдать экзамены на отлично!",
+        System.out.println("Обновляем задачу под id " + takeExams.getId() + " : "
+                + inMemoryTaskManager.updateSimpleTaskById(1, new Task("Сдать экзамены на отлично!",
                 "Выучить все предметы", Status.IN_PROGRESS)));
+        System.out.println("Задача под id " + takeExams.getId() + " : " + takeExams);
 
-        System.out.println("Задача под id "+ takeExams.getId()+ " : "+ takeExams);
-
-        /*//Задача id 2
-        Task pickUpTheChild = new Task(id, "Зaбрать ребенка",
-                "Забрать Петю из детского сада", Status.NEW);
+        //Задача id 2
+        Task pickUpTheChild = new Task("Заехать в школу");
         inMemoryTaskManager.addSimpleTask(pickUpTheChild);
-
-        //Получаем список всех задач
-        System.out.println("Список всех задач: " + inMemoryTaskManager.getAllSimpleTasks());
-
-        inMemoryTaskManager.updateSimpleTaskById(2, new Task(id, "Task", "Update Task", Status.NEW));
+        inMemoryTaskManager.updateSimpleTaskById(2, new Task("Заехать в школу", "Забрать Вову",
+                Status.DONE));
         //Получаем список всех задач, смотрим изменения
         System.out.println("Список всех задач: " + inMemoryTaskManager.getAllSimpleTasks());
 
-
         //Эпик id 3
-        Epic buyProducts = new Epic(id, "Купить продукты", "Description", Status.NEW);
+        Epic buyProducts = new Epic("Купить продукты");
         inMemoryTaskManager.addEpic(buyProducts);
-        System.out.println("Задача под id= 2: " + inMemoryTaskManager.getSimpleTaskById(2));                                            //1
+        System.out.println("Задача под id= " + buyProducts.getId() + " : "
+                + inMemoryTaskManager.getSimpleTaskById(2));
+
         //Подзадача id 4, эпик id 3
-        Subtask milk = new Subtask(id, "Milk", "Fat content 3.2", Status.NEW,
-                 buyProducts);
+        Subtask milk = new Subtask("Молоко", buyProducts);
         inMemoryTaskManager.addSubtask(milk, buyProducts);
+
         //Подзадача id 5, эпик id 3
-        Subtask bread = new Subtask(id, "Bread", "wheat", Status.IN_PROGRESS,
-                 buyProducts);
+        Subtask bread = new Subtask("Хлеб", buyProducts);
         inMemoryTaskManager.addSubtask(bread, buyProducts);
-        System.out.println("Список всех эпиков: " + inMemoryTaskManager.getAllEpics());
-        inMemoryTaskManager.updateSubtask(4, new Subtask(id, "UpdateSub", "SubWasUpdated",
-                Status.IN_PROGRESS,  buyProducts));
+
+        //Обновляем подзадачу под id 4
+        inMemoryTaskManager.updateSubtask(4, new Subtask("Хлеб", "Пшеничный",
+                Status.DONE, buyProducts));
+        //Обновляем подзадачу под id 5
+        inMemoryTaskManager.updateSubtask(5, new Subtask("Молоко", "Пастеризованное",
+                Status.DONE, buyProducts));
         //Получаем список всех подзадач эпика id 3
-        System.out.println("Список поздадач для эпика id = 3: " + inMemoryTaskManager.getAllSubtasksByEpic(3));
+        System.out.println("Список поздадач для эпика id = 3: " + buyProducts.getSubtasks());
         //Получаем подзадачу id 4 эпика id 3
-        System.out.println("Подзадача под id = 4:" + inMemoryTaskManager.getSubtaskById(4));                                    //2
+        System.out.println("Подзадача под id = 4:" + inMemoryTaskManager.getSubtaskById(4));
 
         //Эпик id 6
-        Epic doTheLessons = new Epic(id, "Сделать уроки", "Description", Status.NEW);
+        Epic doTheLessons = new Epic("Сделать уроки");
         inMemoryTaskManager.addEpic(doTheLessons);
+
         //Подзадача id 7, эпик id 6
-        Subtask biology = new Subtask(id, "Biology",
-                "cell division", Status.NEW,  doTheLessons);
+        Subtask biology = new Subtask("Биология", doTheLessons);
         inMemoryTaskManager.addSubtask(biology, doTheLessons);
+        inMemoryTaskManager.updateSubtask(7, new Subtask("Биология", "Подготовить доклад",
+                Status.IN_PROGRESS, doTheLessons));
         //Подзадача id 8, эпик id 6
-        Subtask math = new Subtask(id, "Math", "to solve the task", Status.NEW,  doTheLessons);
+        Subtask math = new Subtask("Математика", doTheLessons);
         inMemoryTaskManager.addSubtask(math, doTheLessons);
 
         ////Получаем список всех эпиков
         System.out.println("Список всех эпиков: " + inMemoryTaskManager.getAllEpics());
 
-        //Получаем список всех эпиков, смотрим изменения
-        System.out.println("Список всех эпиков: " + inMemoryTaskManager.getAllEpics());
-        //Получаем id подзадач эпика id 6
-        System.out.println("Список поздадач для эпика id = 6: " + inMemoryTaskManager.getAllSubtasksByEpic(6));
 
         inMemoryTaskManager.getEpicById(6);                                                                                                //3
         inMemoryTaskManager.getSubtaskById(8);
@@ -85,8 +78,8 @@ public class Main {
         inMemoryTaskManager.getEpicById(3);
         inMemoryTaskManager.getEpicById(6);
         inMemoryTaskManager.getSubtaskById(7);
-        System.out.println( historyManager.getHistory());
+        System.out.println("История: " + historyManager.getHistory());
 
-*/
+
     }
 }
