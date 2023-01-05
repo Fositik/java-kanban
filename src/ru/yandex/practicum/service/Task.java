@@ -14,6 +14,24 @@ public class Task {             //общими чертами для всех з
         this.status = status;
     }
 
+    public Task(String name, String description, Status status) {
+        this.name = name;
+        this.description = description;
+        this.status = status;
+    }
+
+    public Task( String name, String description) {
+        this.name = name;
+        this.description = description;
+        this.status = Status.NEW;
+    }
+
+    public Task( String name) {
+        this.name = name;
+        this.description = null;
+        this.status = Status.NEW;
+    }
+
     public String getName() {
         return name;
     }

@@ -4,16 +4,31 @@ import java.util.Objects;
 
 public class Subtask extends Task {
 
-   /* private int epicId;  //переменная больше не нужна
-   Так как раньше мы передавали в качестве параметра и epicId и сам класс Epic, что было излишним
-   Было решено оставить только Epic
-   Соответственно, код был переработан
-    */
+    /* private int epicId;  //переменная больше не нужна
+    Так как раньше мы передавали в качестве параметра и epicId и сам класс Epic, что было излишним
+    Было решено оставить только Epic
+    Соответственно, код был переработан
+     */
     private Epic epic;
 
-    public Subtask(int id, String name, String description, Status status,  Epic epic) {
+    public Subtask(int id, String name, String description, Status status, Epic epic) {
         super(id, name, description, status);
         this.epic = epic;
+    }
+
+    public Subtask(String name, String description, Status status, Epic epic) {
+        super(name, description, status);
+        this.epic = epic;
+    }
+
+    public Subtask(String name, String description, Epic epic) {
+        super(name, description);
+        this.epic=epic;
+    }
+
+    public Subtask(String name, Epic epic) {
+        super(name);
+        this.epic=epic;
     }
 
     public String getDescription() {

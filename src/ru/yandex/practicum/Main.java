@@ -10,17 +10,23 @@ public class Main {
     public static void main(String[] args) {
 
          int id=1;
+         
         InMemoryTaskManager inMemoryTaskManager = new InMemoryTaskManager();
         TaskManager taskManager = Managers.getDefault();
         InMemoryHistoryManager inMemoryHistoryManager = new InMemoryHistoryManager();
         HistoryManager historyManager = Managers.getDefaultHistory();
+
         //Задача id 1
-        Task takeExams = new Task(id, "Сдать Экзамены",
-                "сдать экзамены на 5", Status.NEW);
+        Task takeExams = new Task("Сдать Экзамены");
         inMemoryTaskManager.addSimpleTask(takeExams);
 
+        System.out.println("Обновляем задачу под id "+takeExams.getId()+" : "
+                + inMemoryTaskManager.updateSimpleTaskById(1,new Task("Сдать экзамены на отлично!",
+                "Выучить все предметы", Status.IN_PROGRESS)));
 
-        //Задача id 2
+        System.out.println("Задача под id "+ takeExams.getId()+ " : "+ takeExams);
+
+        /*//Задача id 2
         Task pickUpTheChild = new Task(id, "Зaбрать ребенка",
                 "Забрать Петю из детского сада", Status.NEW);
         inMemoryTaskManager.addSimpleTask(pickUpTheChild);
@@ -81,6 +87,6 @@ public class Main {
         inMemoryTaskManager.getSubtaskById(7);
         System.out.println( historyManager.getHistory());
 
-
+*/
     }
 }
