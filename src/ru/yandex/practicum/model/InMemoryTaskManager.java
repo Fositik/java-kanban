@@ -166,6 +166,8 @@ public class InMemoryTaskManager implements TaskManager {
             if (!epics.get(value.getEpic().getId()).getStatus().equals(Status.IN_PROGRESS)) {
                 epics.get(value.getEpic().getId()).checkEpicStatusInProgresss();
             }
+            //Если статус подзадачи IN_PROGRESS, то и статус эпика тоже IN_PROGRESS
+
             return value;
         } else {
             System.out.println("Подзадачи под id = " + taskId + " не существует!");

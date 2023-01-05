@@ -10,15 +10,15 @@ public class Epic extends Task {
      */
     protected ArrayList<Subtask> subtasks = new ArrayList<>();
 
-    public Epic(String name){
+    public Epic(String name) {
         super(name);
     }
 
-    public Epic(String name,String description){
-        super(name,description);
+    public Epic(String name, String description) {
+        super(name, description);
     }
 
-    public Epic(String name, String description, Status status){
+    public Epic(String name, String description, Status status) {
         super(name, description, status);
     }
 
@@ -33,7 +33,7 @@ public class Epic extends Task {
     public void checkEpicStatusInProgresss() {
         boolean checkStatus = true;
         for (Subtask subtask : subtasks) {
-            if (!subtask.getStatus().equals(Status.IN_PROGRESS)) {
+       /*     if (!subtask.getStatus().equals(Status.IN_PROGRESS)) {
                 checkStatus = false;
                 break;
             }
@@ -41,6 +41,10 @@ public class Epic extends Task {
         if (checkStatus) {
             System.out.println("Эпик под id = " + id + " выполняется!");
             status = Status.IN_PROGRESS;
+        }*/
+            if (subtask.getStatus().equals(Status.IN_PROGRESS)) {
+                status = Status.IN_PROGRESS;
+            }
         }
     }
 
