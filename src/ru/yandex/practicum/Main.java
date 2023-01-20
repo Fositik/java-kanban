@@ -68,6 +68,9 @@ public class Main {
         System.out.println("История: " + historyManager.getHistory());
 
         inMemoryTaskManager.removeEpicById(3);
+        /**
+         * Итого, порядок должен быть следующим: 2->1->х->7->х->х->х->8->9
+         */
         System.out.println("История: " + historyManager.getHistory());
     }
 }
