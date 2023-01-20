@@ -67,6 +67,7 @@ public class Main {
          */
         System.out.println("История: " + historyManager.getHistory());
 
-
+        inMemoryTaskManager.removeEpicById(3);
+        System.out.println("История: " + historyManager.getHistory());
     }
 }

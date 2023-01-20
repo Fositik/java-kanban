@@ -111,9 +111,13 @@ public class InMemoryTaskManager implements TaskManager {
     @Override
     //метод для удаления эпика по id-->вместе с эпиковм удаляются все подзадачи
     public void removeEpicById(int epicId) {
+        historyManager.remove(epicId);
+        for (Subtask subtask : epics.get(epicId).getSubtasks()){
+            historyManager.remove(subtask.getId());
+            subtasks.remove(subtask.getId());
+        }
         epics.get(epicId).getSubtasks().clear();
         epics.remove(epicId);
-        historyManager.remove(epicId);
         System.out.println("Эпик под id= " + epicId + " и все его подзадачи успешно удалены!");
     }
 
