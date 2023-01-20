@@ -16,24 +16,14 @@ public class Main {
         //Задача id 1
         Task takeExams = new Task("Сдать Экзамены");
         inMemoryTaskManager.addSimpleTask(takeExams);
-        System.out.println("Обновляем задачу под id " + takeExams.getId() + " : "
-                + inMemoryTaskManager.updateSimpleTaskById(1, new Task("Сдать экзамены на отлично!",
-                "Выучить все предметы", Status.IN_PROGRESS)));
-        System.out.println("Задача под id " + takeExams.getId() + " : " + takeExams);
 
         //Задача id 2
         Task pickUpTheChild = new Task("Заехать в школу");
         inMemoryTaskManager.addSimpleTask(pickUpTheChild);
-        inMemoryTaskManager.updateSimpleTaskById(2, new Task("Заехать в школу", "Забрать Вову",
-                Status.DONE));
-        //Получаем список всех задач, смотрим изменения
-        System.out.println("Список всех задач: " + inMemoryTaskManager.getAllSimpleTasks());
-
+        System.out.println("Задача под id "+ pickUpTheChild.getId()+" : "+ inMemoryTaskManager.getSimpleTaskById(2));
         //Эпик id 3
         Epic buyProducts = new Epic("Купить продукты");
         inMemoryTaskManager.addEpic(buyProducts);
-        System.out.println("Задача под id= " + buyProducts.getId() + " : "
-                + inMemoryTaskManager.getSimpleTaskById(2));
 
         //Подзадача id 4, эпик id 3
         Subtask milk = new Subtask("Молоко", buyProducts);
@@ -43,41 +33,38 @@ public class Main {
         Subtask bread = new Subtask("Хлеб", buyProducts);
         inMemoryTaskManager.addSubtask(bread, buyProducts);
 
-        //Обновляем подзадачу под id 4
-        inMemoryTaskManager.updateSubtask(4, new Subtask("Хлеб", "Пшеничный",
-                Status.IN_PROGRESS, buyProducts));
-        //Обновляем подзадачу под id 5
-        inMemoryTaskManager.updateSubtask(5, new Subtask("Молоко", "Пастеризованное",
-                Status.DONE, buyProducts));
-        //Получаем список всех подзадач эпика id 3
-        System.out.println("Список поздадач для эпика id = 3: " + buyProducts.getSubtasks());
-        //Получаем подзадачу id 4 эпика id 3
-        System.out.println("Подзадача под id = 4:" + inMemoryTaskManager.getSubtaskById(4));
-/*
-        //Эпик id 6
+        //Подзадача id 6, эпик id 3
+        Subtask butter = new Subtask("Масло", buyProducts);
+        inMemoryTaskManager.addSubtask(butter,buyProducts);
+
+        //Эпик id 7
         Epic doTheLessons = new Epic("Сделать уроки");
         inMemoryTaskManager.addEpic(doTheLessons);
 
-        //Подзадача id 7, эпик id 6
+        //Подзадача id 8, эпик id 6
         Subtask biology = new Subtask("Биология", doTheLessons);
         inMemoryTaskManager.addSubtask(biology, doTheLessons);
-        inMemoryTaskManager.updateSubtask(7, new Subtask("Биология", "Подготовить доклад",
-                Status.IN_PROGRESS, doTheLessons));
-        //Подзадача id 8, эпик id 6
+
+        //Подзадача id 9, эпик id 6
         Subtask math = new Subtask("Математика", doTheLessons);
         inMemoryTaskManager.addSubtask(math, doTheLessons);
-*/
-        ////Получаем список всех эпиков
-        System.out.println("Список всех эпиков: " + inMemoryTaskManager.getAllEpics());
-/*
 
-        inMemoryTaskManager.getEpicById(6);                                                                                                //3
-        inMemoryTaskManager.getSubtaskById(8);
-        inMemoryTaskManager.getSubtaskById(4);
         inMemoryTaskManager.getSimpleTaskById(1);
+        inMemoryTaskManager.getSimpleTaskById(2);  //Вызвали повторно
+        inMemoryTaskManager.getSimpleTaskById(1);  //Вызвали повторно
         inMemoryTaskManager.getEpicById(3);
-        inMemoryTaskManager.getEpicById(6);
-        inMemoryTaskManager.getSubtaskById(7);*/
+        inMemoryTaskManager.getSubtaskById(8);
+        inMemoryTaskManager.getEpicById(7);
+        inMemoryTaskManager.getSubtaskById(9);
+        inMemoryTaskManager.getSubtaskById(5);
+        inMemoryTaskManager.getSubtaskById(4);
+        inMemoryTaskManager.getSubtaskById(6);
+        inMemoryTaskManager.getSubtaskById(8);       //Вызвали повторно
+        inMemoryTaskManager.getSubtaskById(9);       //Вызвали повторно
+
+        /**
+         * Итого, порядок должен быть следующим: 2->1->3->7->5->4->6->8->9
+         */
         System.out.println("История: " + historyManager.getHistory());
 
 

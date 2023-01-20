@@ -104,6 +104,7 @@ public class InMemoryTaskManager implements TaskManager {
     //метод для удаления задачи по id
     public void removeSimbletaskById(int simpleTaskId) {
         simpleTasks.remove(simpleTaskId);
+        historyManager.remove(simpleTaskId);
         System.out.println("Задача под id= " + simpleTaskId + " была успешно удалена!");
     }
 
@@ -112,6 +113,7 @@ public class InMemoryTaskManager implements TaskManager {
     public void removeEpicById(int epicId) {
         epics.get(epicId).getSubtasks().clear();
         epics.remove(epicId);
+        historyManager.remove(epicId);
         System.out.println("Эпик под id= " + epicId + " и все его подзадачи успешно удалены!");
     }
 
@@ -162,12 +164,12 @@ public class InMemoryTaskManager implements TaskManager {
             value.setDescription(subtask.getDescription());
             value.setName(subtask.getName());
             value.setStatus(subtask.getStatus());
+            //Вызываем метод для проверки статуса эпика на DONE
             epics.get(value.getEpic().getId()).checkEpicStatusDone();
+            //Если статус эпика не IN_PROGRESS, то вызываем метод для проверки на IN_PROGRESS
             if (!epics.get(value.getEpic().getId()).getStatus().equals(Status.IN_PROGRESS)) {
                 epics.get(value.getEpic().getId()).checkEpicStatusInProgresss();
             }
-            //Если статус подзадачи IN_PROGRESS, то и статус эпика тоже IN_PROGRESS
-
             return value;
         } else {
             System.out.println("Подзадачи под id = " + taskId + " не существует!");

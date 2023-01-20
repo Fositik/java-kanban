@@ -31,17 +31,7 @@ public class Epic extends Task {
         после удаления переменной epicId, то я решил, что было бы удобнее перенести эти методы в данный класс.
          */
     public void checkEpicStatusInProgresss() {
-        boolean checkStatus = true;
         for (Subtask subtask : subtasks) {
-       /*     if (!subtask.getStatus().equals(Status.IN_PROGRESS)) {
-                checkStatus = false;
-                break;
-            }
-        }
-        if (checkStatus) {
-            System.out.println("Эпик под id = " + id + " выполняется!");
-            status = Status.IN_PROGRESS;
-        }*/
             if (subtask.getStatus().equals(Status.IN_PROGRESS)) {
                 status = Status.IN_PROGRESS;
             }

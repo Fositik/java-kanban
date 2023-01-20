@@ -18,12 +18,12 @@ public class Subtask extends Task {
 
     public Subtask(String name, String description, Epic epic) {
         super(name, description);
-        this.epic=epic;
+        this.epic = epic;
     }
 
     public Subtask(String name, Epic epic) {
         super(name);
-        this.epic=epic;
+        this.epic = epic;
     }
 
     public String getDescription() {

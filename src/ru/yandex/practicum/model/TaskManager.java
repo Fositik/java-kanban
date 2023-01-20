@@ -17,7 +17,6 @@ public interface TaskManager {
     //Метод для добавления подзадачи
     int addSubtask(Subtask subtask, Epic epic);
 
-
     //Метод для нахождения подзадачи по id
     Subtask getSubtaskById(int subtaskId);
 
@@ -57,8 +56,4 @@ public interface TaskManager {
     void removeAllSubtasks();
 
     void removeAllEpics();
-
-
-
-
 }
