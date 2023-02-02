@@ -22,26 +22,24 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     //метод для добавления простой задачи
-    public int addSimpleTask(Task task) {
+    public void addSimpleTask(Task task) {
         task.setId(nextId++);
         simpleTasks.put(task.getId(), task);
         System.out.println("Задача успешно создана! ID = " + task.getId());
-        return task.getId();
     }
 
     @Override
     //метод для добавления эпика
-    public int addEpic(Epic epic) {
+    public void  addEpic(Epic epic) {
         //задаем уникальный id эпику
         epic.setId(nextId++);
         epics.put(epic.getId(), epic);
         System.out.println("Эпик успешно создан! ID = " + epic.getId());
-        return epic.getId();
     }
 
     @Override
     //метод для добавления подзадачи
-    public int addSubtask(Subtask subtask, Epic epic) {
+    public void addSubtask(Subtask subtask, Epic epic) {
         //задаем уникальный id подзадаче
         subtask.setId(nextId++);
         //если epicId подзадачи совпадает с существующ
@@ -50,12 +48,12 @@ public class InMemoryTaskManager implements TaskManager {
         } else {
             //добавляем подзадачу в список подзадач
             subtasks.put(subtask.getId(), subtask);
+            subtask.setEpic(epic);
             //Добавляем подзадачу в список SubttasksIds для того, чтобы иметь возможность получать список подзадач эпика
             epics.get(epic.getId()).getSubtasks().add(subtask);
 
             System.out.println("Подзадача к эпику id = " + subtask.getId() + " успешно создана!");
         }
-        return subtask.getId();
     }
 
     @Override
@@ -114,7 +112,7 @@ public class InMemoryTaskManager implements TaskManager {
         historyManager.remove(epicId);
         for (Subtask subtask : epics.get(epicId).getSubtasks()){
             historyManager.remove(subtask.getId());
-            subtasks.remove(subtask.getId());
+          // subtasks.remove(subtask.getId());
         }
         epics.get(epicId).getSubtasks().clear();
         epics.remove(epicId);

@@ -9,13 +9,13 @@ import java.util.ArrayList;
 //Метод таск менеджер переделали в интерфейс
 public interface TaskManager {
     //Метод для добавления простой задачи
-    int addSimpleTask(Task task);
+    void addSimpleTask(Task task);
 
     //Метод для добавления эпика
-    int addEpic(Epic epic);
+    void addEpic(Epic epic);
 
     //Метод для добавления подзадачи
-    int addSubtask(Subtask subtask, Epic epic);
+    void addSubtask(Subtask subtask, Epic epic);
 
     //Метод для нахождения подзадачи по id
     Subtask getSubtaskById(int subtaskId);

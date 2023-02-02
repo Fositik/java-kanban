@@ -2,15 +2,12 @@ package ru.yandex.practicum;
 
 import ru.yandex.practicum.model.*;
 import ru.yandex.practicum.service.Epic;
-import ru.yandex.practicum.service.Status;
 import ru.yandex.practicum.service.Subtask;
 import ru.yandex.practicum.service.Task;
 
 public class Main {
     public static void main(String[] args) {
         InMemoryTaskManager inMemoryTaskManager = new InMemoryTaskManager();
-        TaskManager taskManager = Managers.getDefault();
-        InMemoryHistoryManager inMemoryHistoryManager = new InMemoryHistoryManager();
         HistoryManager historyManager = Managers.getDefaultHistory();
 
         //Задача id 1
@@ -34,7 +31,7 @@ public class Main {
         inMemoryTaskManager.addSubtask(bread, buyProducts);
 
         //Подзадача id 6, эпик id 3
-        Subtask butter = new Subtask("Масло", buyProducts);
+        Subtask butter = new Subtask("Масло");
         inMemoryTaskManager.addSubtask(butter,buyProducts);
 
         //Эпик id 7
@@ -69,7 +66,8 @@ public class Main {
 
         inMemoryTaskManager.removeEpicById(3);
         /**
-         * Итого, порядок должен быть следующим: 2->1->х->7->х->х->х->8->9
+         * Удаляем эпик 3, а вместе с ним и подзадачи 4,5,6
+         * Итого, порядок должен быть следующим: 2->1->7->8->9
          */
         System.out.println("История: " + historyManager.getHistory());
     }
