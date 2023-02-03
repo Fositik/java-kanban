@@ -5,15 +5,11 @@ import ru.yandex.practicum.service.Epic;
 import ru.yandex.practicum.service.Status;
 import ru.yandex.practicum.service.Subtask;
 import ru.yandex.practicum.service.Task;
-import ru.yandex.practicum.model.TaskType;
 
 import java.io.*;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
-import java.util.Scanner;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 
