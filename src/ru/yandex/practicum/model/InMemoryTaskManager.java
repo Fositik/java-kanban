@@ -161,8 +161,8 @@ public class InMemoryTaskManager implements TaskManager {
         //id подзадачи остается прежним
         if (subtasks.containsKey(taskId)) {
             //id эпика тоже остается прежним
-            Subtask value = subtasks.get(taskId);
-            value.getEpic().equals(subtask.getEpic());
+            Subtask value = subtasks.get(taskId);               //id
+            value.getEpic().equals(subtask.getEpic());          //
             value.setDescription(subtask.getDescription());
             value.setName(subtask.getName());
             value.setStatus(subtask.getStatus());
