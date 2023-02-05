@@ -210,7 +210,9 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
                 fileWriter.write(historyToString(historyManager));
             }
         } catch (IOException e) {
-            throw new SaveException();
+            System.err.println(String.format("java-kanban\\%s",path));
+            e.getStackTrace();
+
         }
     }
 
@@ -253,6 +255,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
                     }
                     if (task != null) {
                         historyManager.add(task);
+
                     }
                 }
             }
@@ -263,6 +266,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
     }
 
     public static void main(String[] args) {
+        HistoryManager historyManager = Managers.getDefaultHistory();
         FileBackedTasksManager fileBackedTasksManager = new FileBackedTasksManager("test.csv");
         //Задача id 1
         Task takeExams = new Task("Сдать Экзамены", "На отлично");
@@ -282,7 +286,9 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
         Subtask math = new Subtask("Математика", "задачи", doTheLessons);
         fileBackedTasksManager.addSubtask(math, doTheLessons);
         fileBackedTasksManager.updateSubtask(4, new Subtask("Bio", "Deskription", Status.DONE));
-        loadFromFile("test.csv");
-
+        loadFromFile("tst.csv");
+        System.out.println(fileBackedTasksManager.getAllEpics());
+        System.out.println(fileBackedTasksManager.getAllSimpleTasks());
+        System.out.println(historyManager.getHistory());
     }
 }
