@@ -1,9 +1,12 @@
-package ru.yandex.practicum.service;
-
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import ru.yandex.practicum.service.Epic;
+import ru.yandex.practicum.service.Status;
+import ru.yandex.practicum.service.Subtask;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * Для расчёта статуса Epic. Граничные условия:
@@ -37,7 +40,7 @@ class EpicTest {
         subtask1.setEpic(epic);
         subtask2.setEpic(epic);
         //Статусы подзадач NEW по дефолту
-        assertEquals(Status.NEW, epic.getStatus()); //проверка статуса эпика на NEW +
+        Assertions.assertEquals(Status.NEW, epic.getStatus()); //проверка статуса эпика на NEW +
     }
 
     @Test

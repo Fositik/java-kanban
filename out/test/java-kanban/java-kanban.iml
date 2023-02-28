@@ -50,6 +50,5 @@
         <SOURCES />
       </library>
     </orderEntry>
-    <orderEntry type="library" exported="" name="github.database.rider.junit5" level="project" />
   </component>
 </module>

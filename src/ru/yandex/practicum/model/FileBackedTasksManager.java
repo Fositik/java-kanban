@@ -7,6 +7,8 @@ import ru.yandex.practicum.service.Subtask;
 import ru.yandex.practicum.service.Task;
 
 import java.io.*;
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -14,7 +16,7 @@ import java.util.Locale;
 import static java.nio.charset.StandardCharsets.UTF_8;
 
 public class FileBackedTasksManager extends InMemoryTaskManager {
-    private static final String START_STRING = "id,type,name,status,description,epic\n";
+    private static final String START_STRING = "id,type,name,status,description,startTime,duration,epic\n";
     protected final String path;
 
     public FileBackedTasksManager(String path) {
@@ -114,20 +116,34 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
     private String toString(Task task) {
         String taskType = task.getClass().getSimpleName();          //Сокращенное название класса (не включая пакеты)
         String result;                                              //"ru.yandex.practicum.service.Epic" -> "Epic"
+        String startTime;
+        long durationInMinutes;
+        if (task.getStartTime() != null)
+            startTime = task.getStartTime().format(Task.formatter);
+        else
+            startTime = null;
+        if (task.getDuration() != null)
+            durationInMinutes = task.getDuration().toMinutes();
+        else
+            durationInMinutes = 0;
         if (taskType.equals("Task") || taskType.equals("Epic")) {   //Если сокращенное название equals "Task" or "Epic"
-            result = String.format("%s,%s,%s,%s,%s",
+            result = String.format("%s,%s,%s,%s,%s,%s,%s",
                     task.getId(),
                     taskType.toUpperCase(Locale.ROOT),
                     task.getName(),
                     task.getStatus(),
-                    task.getDescription());
+                    task.getDescription(),
+                    startTime,
+                    durationInMinutes);
         } else {
-            result = String.format("%s,%s,%s,%s,%s,%s",         //since subtasks have one more parameter - "epicid",
+            result = String.format("%s,%s,%s,%s,%s,%s,%s,%s",         //since subtasks have one more parameter - "epicid",
                     task.getId(),                               //we need an alternative condition for their formatting
                     taskType.toUpperCase(Locale.ROOT),
                     task.getName(),
                     task.getStatus(),
                     task.getDescription(),
+                    startTime,
+                    durationInMinutes,
                     ((Subtask) task).getEpic().getId());        //Используем явное приведение task к Subtask
         }
         return result;
@@ -141,7 +157,9 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
  * taskValue[2] -> name
  * taskValue[3] -> status
  * taskValue[4] -> description
- * taskValue[5] -> epic
+ * taskValue[5] -> startTime
+ * taskValue[6] -> duration
+ * taskValue[7] -> epic
  */
         String type = taskValues[1].toLowerCase(Locale.ROOT);
         String taskType = type.substring(0, 1).toUpperCase(Locale.ROOT) + type.substring(1);
@@ -159,7 +177,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
             case "Subtask":
                 task = new Subtask(taskValues[2], taskValues[4], Status.valueOf(taskValues[3]));
                 task.setId(Integer.parseInt(taskValues[0]));
-                int epicId = Integer.parseInt(taskValues[5]);
+                int epicId = Integer.parseInt(taskValues[7]);
                 if (subtasks.containsKey(epicId)) {
                     ((Subtask) task).setEpic(getEpicById(epicId));
                     getEpicById(epicId).getSubtasks().add((Subtask) task);
@@ -210,7 +228,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
                 fileWriter.write(historyToString(historyManager));
             }
         } catch (IOException e) {
-            System.err.println(String.format("java-kanban\\%s",path));
+            System.err.println(String.format("java-kanban\\%s", path));
             e.getStackTrace();
 
         }
@@ -223,7 +241,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
             while (reader.ready()) {
                 String line = reader.readLine();
                 if (!line.isBlank()) {
-                    if (!line.equals("id,type,name,status,description,epic")) {
+                    if (!line.equals("id,type,name,status,description,startTime,duration,epic")) {
                         Task task = fileBackedTasksManager.fromString(line);
                         switch (task.getClass().getSimpleName()) {
                             case "Task":
@@ -269,10 +287,10 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
         HistoryManager historyManager = Managers.getDefaultHistory();
         FileBackedTasksManager fileBackedTasksManager = new FileBackedTasksManager("test.csv");
         //Задача id 1
-        Task takeExams = new Task("Сдать Экзамены", "На отлично");
+        Task takeExams = new Task("Сдать Экзамены", "На отлично",LocalDateTime.now(), Duration.ofMinutes(15));
         fileBackedTasksManager.addSimpleTask(takeExams);
         //Задача id 2
-        Task goHome = new Task("go home");
+        Task goHome = new Task("go home",LocalDateTime.now().plus(Duration.ofMinutes(55)), Duration.ofMinutes(15));
         fileBackedTasksManager.addSimpleTask(goHome);
         fileBackedTasksManager.getSimpleTaskById(1);
         fileBackedTasksManager.getSimpleTaskById(2);
@@ -280,13 +298,19 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
         Epic doTheLessons = new Epic("Сделать уроки", "Описание");
         fileBackedTasksManager.addEpic(doTheLessons);
         //Задача id 4
-        Subtask biology = new Subtask("Биология", "доклад", doTheLessons);
+        Subtask biology = new Subtask(
+                "Биология",
+                "доклад",
+                LocalDateTime.now().plus(Duration.ofMinutes(123)),
+                        Duration.ofMinutes(15),
+                        doTheLessons);
         fileBackedTasksManager.addSubtask(biology, doTheLessons);
         //Задача id 5
-        Subtask math = new Subtask("Математика", "задачи", doTheLessons);
+        Subtask math = new Subtask("Математика", "задачи",LocalDateTime.now().plus(Duration.ofMinutes(35)), Duration.ofMinutes(15), doTheLessons);
         fileBackedTasksManager.addSubtask(math, doTheLessons);
-        fileBackedTasksManager.updateSubtask(4, new Subtask("Bio", "Deskription", Status.DONE));
-        loadFromFile("tst.csv");
+      //  fileBackedTasksManager.updateSubtask(4, new Subtask("Bio", "Description", Status.DONE));
+        loadFromFile("test.csv");
+        System.out.printf("ЗАдачи по приоритету"+fileBackedTasksManager.getPrioritizedTasks().toString());
         System.out.println(fileBackedTasksManager.getAllEpics());
         System.out.println(fileBackedTasksManager.getAllSimpleTasks());
         System.out.println(historyManager.getHistory());

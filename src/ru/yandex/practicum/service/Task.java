@@ -1,5 +1,8 @@
 package ru.yandex.practicum.service;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 
 public class Task {             //общими чертами для всех задач являются:
@@ -7,6 +10,10 @@ public class Task {             //общими чертами для всех з
     protected int id;           //уникальный идентификатор, по которому можно найти и управлять задачей
     protected String description;
     protected Status status;    //текущий статус задачи
+    //Добавьте новые поля в задачи:
+    protected Duration duration; //продолжительность задачи, оценка того, сколько времени она займёт в минутах (число);
+    protected LocalDateTime startTime; //дата, когда предполагается приступить к выполнению задачи.
+    public static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy|HH:mm");
 
     //Решил протестировать перегрузку и понял, что указывать id при создании новой задачи нет никакой необходимости.
     public Task(String name, String description, Status status) {
@@ -27,6 +34,63 @@ public class Task {             //общими чертами для всех з
         this.name = name;
         this.description = null;
         this.status = Status.NEW;
+    }
+
+    public Task(String name, LocalDateTime startTime, Duration duration) {
+        this.name = name;
+        this.description = null;
+        this.status = Status.NEW;
+        this.duration = duration;
+        this.startTime = startTime;
+    }
+
+    public Task(String name, String description, Status status, LocalDateTime startTime, Duration duration) {
+        this.name = name;
+        this.description = description;
+        this.status = status;
+        this.duration = duration;
+        this.startTime = startTime;
+    }
+
+    public Task(String name, String description, LocalDateTime startTime, Duration duration) {
+        this.name = name;
+        this.description = description;
+        this.status = Status.NEW;
+        this.duration = duration;
+        this.startTime = startTime;
+    }
+    /**
+     * getEndTime() — время завершения задачи, которое рассчитывается исходя из startTime и duration.
+     */
+    public LocalDateTime getEndTime(){
+        if (startTime!=null&duration!=null){
+            return startTime.plus(duration);
+        }
+        return null;
+    }
+
+    public void setDuration(Duration duration) {
+        this.duration = duration;
+    }
+
+    public void setDuration(long minutes){
+        this.duration = Duration.ofMinutes(minutes);
+    }
+
+    public void setStartTime(LocalDateTime startTime) {
+        this.startTime = startTime;
+    }
+
+    public void setStartTime(String startTime){
+        this.startTime = LocalDateTime.parse(startTime,formatter);
+    }
+
+    public Duration getDuration() {
+        return duration;
+    }
+
+    public LocalDateTime getStartTime() {
+        return startTime;
     }
 
     public String getName() {
@@ -73,6 +137,7 @@ public class Task {             //общими чертами для всех з
     public int hashCode() {
         return Objects.hash(id, name, description, status);
     }
+
 
     @Override
     public String toString() {
