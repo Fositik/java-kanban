@@ -1,0 +1,11 @@
+
+Y
+java:S2259ä"BA "NullPointerException" could be thrown; "task" is nullable here.(öµÃÒ
+=	java:S131•""Add a default case to this switch.(’²†ùÿÿÿÿ
+N	java:S106Õ"9Replace this use of System.out or System.err by a logger.(Íêé+
+i
+java:S3776Û"RRefactor this method to reduce its Cognitive Complexity from 24 to the 15 allowed.(“şò­
+8	java:S131ä""Add a default case to this switch.(öµÃÒ
+O	java:S106¢"9Replace this use of System.out or System.err by a logger.(· ¶Û
+T	java:S106£"9Replace this use of System.out or System.err by a logger.(ÀİÈ‡øÿÿÿÿ
+T	java:S106¤"9Replace this use of System.out or System.err by a logger.(š°“øÿÿÿÿ
