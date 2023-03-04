@@ -1,8 +1,3 @@
 id,type,name,status,description,startTime,duration,epic
-1,TASK,Сдать Экзамены,NEW,На отлично,28.02.2023|19:40,15
-2,TASK,go home,NEW,null,28.02.2023|20:35,15
-3,EPIC,Сделать уроки,NEW,Описание,28.02.2023|20:15,30
-4,SUBTASK,Биология,NEW,доклад,28.02.2023|21:43,15,3
-5,SUBTASK,Математика,NEW,задачи,28.02.2023|20:15,15,3
-
-1,2
+1,TASK,T1,NEW,D1,04.03.2023|18:36,15
+2,EPIC,E1,NEW,D1,null,0

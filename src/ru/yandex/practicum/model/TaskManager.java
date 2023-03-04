@@ -5,6 +5,7 @@ import ru.yandex.practicum.service.Subtask;
 import ru.yandex.practicum.service.Task;
 
 import java.util.ArrayList;
+import java.util.List;
 
 //Метод таск менеджер переделали в интерфейс
 public interface TaskManager {
@@ -42,13 +43,13 @@ public interface TaskManager {
     //Метод для удаления подзадачи по id
     void removeSubtaskById(int subtaskId);
 
-    //Метод для обновления задачи по по id
+    //Метод для обновления задачи по id
     Task updateSimpleTaskById(int taskId, Task task);
 
-    //Метод для обновления эпика по по id
+    //Метод для обновления эпика по id
     Epic updateEpicById(int taskId, Epic epic);
 
-    //Метод для обновления задачи по по id
+    //Метод для обновления задачи по id
     Subtask updateSubtask(int taskId, Subtask subtask);
 
     void removeAllSimpleTasks();
@@ -56,4 +57,6 @@ public interface TaskManager {
     void removeAllSubtasks();
 
     void removeAllEpics();
+
+    List<Task> historyList();
 }

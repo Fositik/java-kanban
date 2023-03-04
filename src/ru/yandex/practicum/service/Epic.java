@@ -81,26 +81,13 @@ public class Epic extends Task {
         if (o == null || getClass() != o.getClass()) return false;
         if (!super.equals(o)) return false;
         Epic epic = (Epic) o;
-        return subtasks.equals(epic.subtasks) && endTime.equals(epic.endTime);
+        return Objects.equals(subtasks, epic.subtasks) && Objects.equals(endTime, epic.endTime);
     }
 
     @Override
     public int hashCode() {
         return Objects.hash(super.hashCode(), subtasks, endTime);
     }
-//    @Override
-//    public boolean equals(Object o) {
-//        if (this == o) return true;
-//        if (o == null || getClass() != o.getClass()) return false;
-//        if (!super.equals(o)) return false;
-//        Epic epic = (Epic) o;
-//        return subtasks.equals(epic.subtasks);
-//    }
-
-//    @Override
-//    public int hashCode() {
-//        return Objects.hash(super.hashCode(), subtasks);
-//    }
 
     public void calculateStatrTimeAndDuration() {
         duration = null;                                                //Поле нужно на случай того, если були добавлены новые подзадачи в эпик

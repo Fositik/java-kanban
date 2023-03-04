@@ -1,19 +1,9 @@
 
 `
 0src/ru/yandex/practicum/model/SaveException.java,5\3\53ec9db0eedd005069ed7ae57708b6050ca1344a
-i
-9src/ru/yandex/practicum/model/FileBackedTasksManager.java,c\b\cba9cc593c2dde96f28fb053052dbaa3e622398e
 a
 1src/ru/yandex/practicum/model/HistoryManager.java,9\3\9308d290ddc5bed024fe4911af2f8ed31b5c6eee
-i
-9src/ru/yandex/practicum/model/InMemoryHistoryManager.java,c\e\ce3cb3552c433dd2fe5ffe7b64f871425aaa1bfb
-8
-test.csv,1\9\19b883056c07067ff8919caf54289cc083a39a56
 [
 +src/ru/yandex/practicum/service/Status.java,8\9\898e50f7076b7c38d94bde997db90c353eda3f97
-[
-+src/ru/yandex/practicum/model/Managers.java,2\5\257d53b70c93b17ba901c49479c87ef61080eea4
 ?
 java-kanban.iml,d\f\df5dcbbd3f931c7c23855ccec11732ab4c8544f2
-f
-6src/ru/yandex/practicum/model/InMemoryTaskManager.java,5\c\5cbf34c15465a4a214a97fa4755ecb6f0775d502

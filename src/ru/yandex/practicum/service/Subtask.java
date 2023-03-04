@@ -7,7 +7,7 @@ import java.util.Objects;
 
 public class Subtask extends Task {
 
-    // private int epicId;  //переменная больше не нужна
+    //private int epicId;  //переменная больше не нужна
     /*Так как раньше мы передавали в качестве параметра и epicId и сам класс Epic, что было излишним
     Было решено оставить только Epic
     Соответственно, код был переработан
@@ -77,7 +77,14 @@ public class Subtask extends Task {
 
     public void setEpic(Epic epic) {
         this.epic = epic;
+        //this.epicId = epic.getId();
     }
+//    public int getEpicId(){
+//        return epicId;
+//    }
+//    public void setEpicId(int epicId){
+//        this.epicId = epicId;
+//    }
 
     @Override
     public boolean equals(Object o) {

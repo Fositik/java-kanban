@@ -46,35 +46,28 @@ public class Main {
         inMemoryTaskManager.addSubtask(biology, doTheLessons);
 
         //Подзадача id 9, эпик id 6
-        Subtask math = new Subtask("Математика", doTheLessons);
+        Subtask math = new Subtask("Математика",LocalDateTime.now().plus(Duration.ofMinutes(256)), Duration.ofMinutes(30), doTheLessons);
         inMemoryTaskManager.addSubtask(math, doTheLessons);
-        Subtask adf = new Subtask("Математика2", doTheLessons);
+        Subtask adf = new Subtask("Математика2",LocalDateTime.now().plus(Duration.ofMinutes(256)), Duration.ofMinutes(30), doTheLessons);
         inMemoryTaskManager.addSubtask(adf, doTheLessons);
 
-        inMemoryTaskManager.getSimpleTaskById(1);
-        inMemoryTaskManager.getSimpleTaskById(2);  //Вызвали повторно
-        inMemoryTaskManager.getSimpleTaskById(1);  //Вызвали повторно
-        inMemoryTaskManager.getEpicById(3);
-        inMemoryTaskManager.getSubtaskById(8);
-        inMemoryTaskManager.getEpicById(7);
-        inMemoryTaskManager.getSubtaskById(9);
-        inMemoryTaskManager.getSubtaskById(5);
-        inMemoryTaskManager.getSubtaskById(4);
-        inMemoryTaskManager.getSubtaskById(6);
-        inMemoryTaskManager.getSubtaskById(8);       //Вызвали повторно
-        inMemoryTaskManager.getSubtaskById(9);       //Вызвали повторно
+        Task takeExams2 = new Task("Сдать Экзамены");
+        inMemoryTaskManager.addSimpleTask(takeExams2);
 
+        System.out.println(inMemoryTaskManager.getAllSubtasksByEpic(7));
+        inMemoryTaskManager.removeAllSubtasks();
+        System.out.println(inMemoryTaskManager.getAllSubtasksByEpic(7));
         /**
          * Итого, порядок должен быть следующим: 2->1->3->7->5->4->6->8->9
          */
         System.out.println("История: " + historyManager.getHistory());
 
-        inMemoryTaskManager.removeEpicById(3);
+
         /**
          * Удаляем эпик 3, а вместе с ним и подзадачи 4,5,6
          * Итого, порядок должен быть следующим: 2->1->7->8->9
          */
         System.out.println("История: " + historyManager.getHistory());
-        inMemoryTaskManager.getPrioritizedTasks();
+        System.out.println("История: "+ inMemoryTaskManager.getPrioritizedTasks());
     }
 }

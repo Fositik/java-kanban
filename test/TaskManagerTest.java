@@ -1,9 +1,13 @@
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
 import ru.yandex.practicum.model.TaskManager;
 import ru.yandex.practicum.service.Epic;
 import ru.yandex.practicum.service.Subtask;
 import ru.yandex.practicum.service.Task;
+
+import java.time.Duration;
+import java.time.LocalDateTime;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -12,51 +16,84 @@ import static org.junit.jupiter.api.Assertions.*;
  * из интерфейса abstract class TaskManagerTest<T extends TaskManager>.
  */
 abstract public class TaskManagerTest<T extends TaskManager> {
-    private final T object;
+    protected final T object;
     TaskManager taskManager;
     Epic epic;
     Subtask subtask;
     Task task;
+
 
     public TaskManagerTest(T object) {
         this.object = object;
     }
 
     @BeforeEach
-    void createTAskManager() {
+    void createTaskManager() {
         taskManager = object;
         epic = new Epic("Поесть");
-        subtask = new Subtask("Заказать роллы");
-        task = new Task("Выпить сок");
+        subtask = new Subtask(
+                "Заказать пиццы",
+                LocalDateTime.now().plus(Duration.ofMinutes(120)),
+                Duration.ofMinutes(15),
+                epic
+        );
+        task = new Task(
+                "Выпить сок",
+                LocalDateTime.now(),
+                Duration.ofMinutes(15)
+        );
     }
 
     @Test
-    void addSimpleTask() {
-        taskManager.addSimpleTask(task);
+    void shouldCreateSimpleTask() {
+        object.addSimpleTask(task);
         Task[] expectedTaskList = new Task[]{task};
         Task[] realTaskList = taskManager.getAllSimpleTasks().toArray(Task[]::new);
         assertArrayEquals(
                 expectedTaskList,
                 realTaskList,
-                "Arrays do not match."
+                "Arrays are not equal"
         );
     }
 
     @Test
-    void addEpic() {
+    void shouldDontCreateNewSimpleTask() {
+        taskManager.addSimpleTask(task);
+        taskManager.addSimpleTask(task);
+        int expectedSize = 1;
+        assertEquals(
+                expectedSize,
+                taskManager.getAllSimpleTasks().size(),
+                "Created a copy of the simple task"
+        );  //Изначально тест был провален
+    }
+
+
+    @Test
+    void shouldCreateEpic() {
         taskManager.addEpic(epic);
         Epic[] expectedEpicList = new Epic[]{epic};
         Epic[] realEpicList = taskManager.getAllEpics().toArray(Epic[]::new);
         assertArrayEquals(
                 expectedEpicList,
                 realEpicList,
-                "Arrays do not match."
+                "Arrays are not equal"
         );
-
     }
 
     @Test
-    void addSubtask() {
+    void shouldDontCreateNewEpic() {
+        taskManager.addEpic(epic);
+        taskManager.addEpic(epic);
+        int expectedSize = 1;
+        assertEquals(
+                expectedSize,
+                taskManager.getAllEpics().size(),
+                "Created a copy of the epic");
+    }
+
+    @Test
+    void shouldCreateSubtask() {
         taskManager.addEpic(epic);
         taskManager.addSubtask(subtask, epic);
         Subtask[] expectedSubtaskList = new Subtask[]{subtask};
@@ -64,73 +101,191 @@ abstract public class TaskManagerTest<T extends TaskManager> {
         assertArrayEquals(
                 expectedSubtaskList,
                 realSubtaskList,
-                "Arrays do not match."
+                "Arrays are not equal"
         );
     }
 
     @Test
-    void getSubtaskById() {
+    void shouldDontCreateNewSubtask() {
         taskManager.addEpic(epic);
         taskManager.addSubtask(subtask, epic);
-
-
+        taskManager.addSubtask(subtask, epic);
+        int expectedSize = 1;
+        assertEquals(
+                expectedSize,
+                taskManager.getAllSubtasksByEpic(epic.getId()).size(),
+                "Created a copy of the subtask"
+        ); //Изначально тест был провален
     }
 
     @Test
-    void getEpicById() {
+    void shouldFindSubtaskById() {
         taskManager.addEpic(epic);
-        assertEquals(epic, taskManager.getEpicById(epic.getId()));
+        taskManager.addSubtask(subtask, epic);
+        assertEquals(
+                subtask,
+                taskManager.getSubtaskById(subtask.getId()),
+                "Subtask not found."
+        );
     }
 
     @Test
-    void getSimpleTaskById() {
+    void shouldFindEpicById() {
+        taskManager.addEpic(epic);
+        assertEquals(
+                epic,
+                taskManager.getEpicById(epic.getId()),
+                "Epic not found."
+        );
     }
 
     @Test
-    void getAllSimpleTasks() {
+    void shouldFindSimpleTaskById() {
+        taskManager.addSimpleTask(task);
+        assertEquals(
+                task,
+                taskManager.getSimpleTaskById(task.getId()),
+                "Simple task not found."
+        );
     }
 
     @Test
-    void getAllEpics() {
+    void shouldGetAllSimpleTasks() {
+        taskManager.addSimpleTask(task);
+        Task[] expectedTaskList = new Task[]{task};
+        Task[] realTaskList = taskManager.getAllSimpleTasks().toArray(Task[]::new);
+        assertArrayEquals(
+                expectedTaskList,
+                realTaskList,
+                "Arrays are not equal!"
+        );
     }
 
     @Test
-    void getAllSubtasksByEpic() {
+    void shouldGetAllEpics() {
+        taskManager.addEpic(epic);
+        Epic[] expectedEpicList = new Epic[]{epic};
+        Epic[] realEpicList = taskManager.getAllEpics().toArray(Epic[]::new);
+        assertArrayEquals(
+                expectedEpicList,
+                realEpicList,
+                "Arrays are not equal!"
+        );
     }
 
     @Test
-    void removeSimbletaskById() {
+    void shouldGetAllSubtasksByEpic() {
+        taskManager.addEpic(epic);
+        taskManager.addSubtask(subtask, epic);
+        Subtask[] expectedSubtaskList = new Subtask[]{subtask};
+        Subtask[] realSubtaskList = taskManager.getAllSubtasksByEpic(epic.getId()).toArray(Subtask[]::new);
+        assertArrayEquals(
+                expectedSubtaskList,
+                realSubtaskList,
+                "Arrays are not equal!"
+        );
     }
 
     @Test
-    void removeEpicById() {
+    void shouldRemoveSimbletaskById() {
+        taskManager.addSimpleTask(task);
+        taskManager.removeSimbletaskById(task.getId());
+        assertTrue(
+                taskManager.getAllSimpleTasks().isEmpty(),
+                "The task was not deleted");
     }
 
     @Test
-    void removeSubtaskById() {
+    void shouldRemoveEpicById() {
+        taskManager.addEpic(epic);
+        taskManager.removeEpicById(epic.getId());
+        assertTrue(
+                taskManager.getAllEpics().isEmpty(),
+                "The epic was not deleted"
+        );
     }
 
     @Test
-    void updateSimpleTaskById() {
+    void shouldRemoveSubtaskById() {
+        taskManager.addEpic(epic);
+        taskManager.addSubtask(subtask, epic);
+        taskManager.removeSubtaskById(subtask.getId());
+        assertTrue(
+                epic.getSubtasks().isEmpty(),
+                "The subtask was not deleted"
+        );
+        assertNull(
+                taskManager.updateSubtask(subtask.getId(), new Subtask("Test")),
+                "The subtask was not deleted"
+        );
     }
 
     @Test
-    void updateEpicById() {
+    void shouldUpdateSimpleTaskById() {             //Изначально крашилось, пришлось корректировать equals в классе Task
+        taskManager.addSimpleTask(task);
+        Task expectedSimpleTask = new Task("Купить новый ноутбук");
+        expectedSimpleTask.setId(task.getId());
+        assertEquals(
+                expectedSimpleTask,
+                taskManager.updateSimpleTaskById(task.getId(), new Task("Купить новый ноутбук")),
+                "Tasks are different."
+        );
     }
 
     @Test
-    void updateSubtask() {
+    void shouldUpdateEpicById() {       //Изначально крашилось, пришлось корректировать equals в классе Epic
+        taskManager.addEpic(epic);
+        Epic expectedEpic = new Epic("Купить продукты");
+        expectedEpic.setId(epic.getId());
+        assertEquals(
+                expectedEpic,
+                taskManager.updateEpicById(epic.getId(), new Epic("Купить продукты")),
+                "Epics are different."
+        );
     }
 
     @Test
-    void removeAllSimpleTasks() {
+    void shouldUpdateSubtask() {
+        taskManager.addEpic(epic);
+        taskManager.addSubtask(subtask, epic);
+        Subtask expectedSubtask = new Subtask("Молоко", epic);
+        expectedSubtask.setId(subtask.getId());
+        assertEquals(
+                expectedSubtask,
+                taskManager.updateSubtask(subtask.getId(), new Subtask("Молоко")),
+                "Subtasks are different."
+        );
     }
 
     @Test
-    void removeAllSubtasks() {
+    void shouldRemoveAllSimpleTasks() {
+        taskManager.addSimpleTask(task);
+        taskManager.removeAllSimpleTasks();
+        assertTrue(
+                taskManager.getAllSimpleTasks().isEmpty(),
+                "Tasks have not been deleted"
+        );
     }
 
     @Test
-    void removeAllEpics() {
+    void shouldRemoveAllSubtasks() {
+        taskManager.addEpic(epic);
+        taskManager.addSubtask(subtask, epic);
+        taskManager.removeAllSubtasks();
+        assertTrue(
+                taskManager.getAllSubtasksByEpic(epic.getId()).isEmpty(),
+                "Subtasks have not been deleted"
+        );
+    }
+
+    @Test
+    void shouldRemoveAllEpics() {
+        taskManager.addEpic(epic);
+        taskManager.removeAllEpics();
+        assertTrue(
+                taskManager.getAllEpics().isEmpty(),
+                "Epics have not been deleted"
+        );
+
     }
 }

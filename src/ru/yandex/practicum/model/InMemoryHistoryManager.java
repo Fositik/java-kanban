@@ -6,7 +6,7 @@ import java.util.*;
 
 public class InMemoryHistoryManager implements HistoryManager {
     //Создавем связанный список для хранения истории просмотров.
-    private static final CustomLinkedList<Task> history = new CustomLinkedList<>();
+    private final CustomLinkedList<Task> history = new CustomLinkedList<>();
 
     @Override
     //Метод для добавления очередной просмотренной задачи в Связанный список history
@@ -15,6 +15,7 @@ public class InMemoryHistoryManager implements HistoryManager {
             remove(task.getId());                                   //удаляем предыдущую запись
         }
         history.linkLast(task);                                     //и добавляем ее в конец
+      //  System.out.println(history.map.values());
     }
 
     @Override
@@ -41,7 +42,7 @@ public class InMemoryHistoryManager implements HistoryManager {
         private final Map<Integer, Node<E>> map = new HashMap<>(); //мапа, которая в ключе хранит id задачи, а в значении узел связанного списка
 
         private void linkLast(E value) {
-            if (head == null) {                          //В первую очередь, проверям, пуст ли наш связанный список
+            if (head==null) {                          //В первую очередь, проверям, пуст ли наш связанный список
                 Node<E> currentNode = new Node<>(value); //Новая нода
                 map.put(value.getId(), currentNode);     //Добавляем новую ноду в мапу
                 head = currentNode;                      //Текущая нода - это голова списка
@@ -64,7 +65,7 @@ public class InMemoryHistoryManager implements HistoryManager {
         private List<E> getTasks() {
             if (head != null) {                             //Если список не пустой
                 List<E> tasks = new ArrayList<>();
-                Node<E> currentNode = head;                 //поле для хранения текщей ноды. Нужно, чтобы пробежаться по списку
+                Node<E> currentNode = head;                 //поле для хранения текущей ноды. Нужно, чтобы пробежаться по списку
                 while (true) {
                     tasks.add(currentNode.getValue());      //добавляем значение текущей ноды
                     if (currentNode.getNext() == null)      //если следующего элемента не существует
@@ -77,8 +78,10 @@ public class InMemoryHistoryManager implements HistoryManager {
         }
 
         private void removeNode(Node<E> value) {
-            if (head == null) {                     //Если список пуст
+            if(size==0)
                 return;
+            else if (size ==1) {                     //Если список пуст
+                head = null;
             } else if (head == value) {             //Если нода, которую хотим удалить - голова
                 if (size == 2) {                    //Если список содержит всего две ноды
                     tail.setPrev(null);             //Отвязываем голову и хвост

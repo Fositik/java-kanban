@@ -20,6 +20,8 @@ public class Task {             //общими чертами для всех з
         this.name = name;
         this.description = description;
         this.status = status;
+        this.startTime = null;
+        this.duration = null;
     }
 
     //Перегрузка конструктора. Когда передаем имя и описание. Статус по умолчанию равен NEW
@@ -27,6 +29,8 @@ public class Task {             //общими чертами для всех з
         this.name = name;
         this.description = description;
         this.status = Status.NEW;
+        this.startTime = null;
+        this.duration = null;
     }
 
     //Когда передаем только имя. Описание по умолчанию равно null, а сатаус - NEW
@@ -34,6 +38,8 @@ public class Task {             //общими чертами для всех з
         this.name = name;
         this.description = null;
         this.status = Status.NEW;
+        this.startTime = null;
+        this.duration = null;
     }
 
     public Task(String name, LocalDateTime startTime, Duration duration) {
@@ -59,11 +65,12 @@ public class Task {             //общими чертами для всех з
         this.duration = duration;
         this.startTime = startTime;
     }
+
     /**
      * getEndTime() — время завершения задачи, которое рассчитывается исходя из startTime и duration.
      */
-    public LocalDateTime getEndTime(){
-        if (startTime!=null&duration!=null){
+    public LocalDateTime getEndTime() {
+        if (startTime != null & duration != null) {
             return startTime.plus(duration);
         }
         return null;
@@ -73,7 +80,7 @@ public class Task {             //общими чертами для всех з
         this.duration = duration;
     }
 
-    public void setDuration(long minutes){
+    public void setDuration(long minutes) {
         this.duration = Duration.ofMinutes(minutes);
     }
 
@@ -81,8 +88,10 @@ public class Task {             //общими чертами для всех з
         this.startTime = startTime;
     }
 
-    public void setStartTime(String startTime){
-        this.startTime = LocalDateTime.parse(startTime,formatter);
+    public void setStartTime(String startTime) {
+        if(startTime!=null)
+        this.startTime = LocalDateTime.parse(startTime, formatter);
+        else this.startTime = null;
     }
 
     public Duration getDuration() {
@@ -130,7 +139,9 @@ public class Task {             //общими чертами для всех з
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Task task = (Task) o;
-        return id == task.id && name.equals(task.name) && description.equals(task.description) && status == task.status;
+        return id == task.id && Objects.equals(name, task.name)
+                && Objects.equals(description, task.description)
+                && Objects.equals(status, task.status);
     }
 
     @Override
@@ -138,6 +149,10 @@ public class Task {             //общими чертами для всех з
         return Objects.hash(id, name, description, status);
     }
 
+    public void resetStartTimeAndDuration() {
+        startTime = null;
+        duration = null;
+    }
 
     @Override
     public String toString() {
