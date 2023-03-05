@@ -11,7 +11,7 @@ import java.util.stream.Collectors;
 
 //В класс InMemoryTaskManager были перенесены все методы из TaskManager
 public class InMemoryTaskManager implements TaskManager {
-   // HistoryManager historyManager = Managers.getDefaultHistory();
+    // HistoryManager historyManager = Managers.getDefaultHistory();
     protected final InMemoryHistoryManager historyManager = new InMemoryHistoryManager();
     //Счетчик для идентификаторов задач
     private int nextId = 1;
@@ -275,7 +275,10 @@ public class InMemoryTaskManager implements TaskManager {
             allTask.addAll(getAllTasksWithoutStartTime());
             return allTask;
         } else {
-            List<Task> allTasks = getAllTasksWithStartTime().stream().sorted(Comparator.comparing(Task::getStartTime)).collect(Collectors.toList());
+            List<Task> allTasks = getAllTasksWithStartTime()
+                    .stream()
+                    .sorted(Comparator.comparing(Task::getStartTime))
+                    .collect(Collectors.toList());
             sortedTasks = new TreeSet<>(Comparator.comparing(Task::getStartTime));
             sortedTasks.addAll(allTasks);
             allTasks.addAll(getAllTasksWithoutStartTime());
@@ -300,17 +303,20 @@ public class InMemoryTaskManager implements TaskManager {
                             && task.getStartTime() != null
                             && priorityTask.getEndTime() != null
                             && (task.getStartTime().equals(priorityTask.getEndTime())
-                            || task.getStartTime().isBefore(priorityTask.getEndTime()))) {
+                            || task.getStartTime().isBefore(priorityTask.getEndTime()))
+            ) {
                 isIntersection = true;
                 break;
             }
-            if (isIntersection) {
-                System.out.println("Пересечение задачи под id = " + task.getId());
-                sortedTasks.remove(task);
-                task.resetStartTimeAndDuration();
-            }
+        }
+        if (isIntersection) {
+            System.out.println("Пересечение задачи под id = " + task.getId());
+            sortedTasks.remove(task);
+            task.resetStartTimeAndDuration();
         }
     }
+
+
 
     //Понадобилось, чтобы в одном из тестов вывести историю просмотров задач
     public List<Task> historyList() {

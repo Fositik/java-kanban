@@ -24,7 +24,8 @@ import static org.junit.jupiter.api.Assertions.*;
  * c. С неверным идентификатором задачи (пустой и/или несуществующий идентификатор).
  */
 public class InMemoryTaskManagerTest extends TaskManagerTest<InMemoryTaskManager> {
-    private InMemoryTaskManager taskManager;
+  // InMemoryTaskManager taskManager1;
+    private TaskManager taskManager1 = new InMemoryTaskManager();
     private final String startTime = "02.03.2023|10:00";
     Epic epic1;
     Subtask subtask1;
@@ -65,20 +66,21 @@ public class InMemoryTaskManagerTest extends TaskManagerTest<InMemoryTaskManager
         assertEquals("02.03.2023|10:15", subtask1.getEndTime().format(Task.formatter));
     }
 
+    //Проверка, что время старта и окончания эпика рассчитываются корректно
     @Test
     void shouldReturnLocalDataTimeOfEpic() {
         TaskManager taskManager = new InMemoryTaskManager();
         createEpicAndSubtasks();
         subtask1.setStartTime(startTime);
         subtask1.setDuration(30);
-        subtask2.setStartTime("02.03.2023|10:20");
+        subtask2.setStartTime("02.03.2023|10:31");
         subtask2.setDuration(60);
         taskManager.addEpic(epic1);
         taskManager.addSubtask(subtask1, epic1);
         taskManager.addSubtask(subtask2, epic1);
         assertEquals("02.03.2023|10:00", epic1.getStartTime().format(Task.formatter));
         assertEquals(90, epic1.getDuration().toMinutes());
-        assertEquals("02.03.2023|11:20", epic1.getEndTime().format(Task.formatter));
+        assertEquals("02.03.2023|11:31", epic1.getEndTime().format(Task.formatter));
     }
 
     //Когда во второй подзадаче не определены дата старта и продолжительность
@@ -96,6 +98,7 @@ public class InMemoryTaskManagerTest extends TaskManagerTest<InMemoryTaskManager
         assertEquals("02.03.2023|10:30", epic1.getEndTime().format(Task.formatter));
     }
 
+    //Проверка времени старта и окончания эпика, когда подзадачи начинаются в разное время
     @Test
     void shouldReturnLocalDateTimeOfEpicWhoseSubtasksStartAtDifferentTimes() {
         TaskManager taskManager = new InMemoryTaskManager();
@@ -112,6 +115,7 @@ public class InMemoryTaskManagerTest extends TaskManagerTest<InMemoryTaskManager
         assertEquals("02.03.2024|16:00", epic1.getEndTime().format(Task.formatter));
     }
 
+    //Проверка на корректность сортировки задач по времени
     @Test
     void shouldReturnSortedListByTime() {
         TaskManager taskManager = new InMemoryTaskManager();
@@ -130,5 +134,62 @@ public class InMemoryTaskManagerTest extends TaskManagerTest<InMemoryTaskManager
         Task[] expectedSortedTaskList = new Task[]{task1,task2,task4,task3};
         Task[] realSortedTaskList = ((InMemoryTaskManager)taskManager).getPrioritizedTasks().toArray(Task[]::new);
         assertArrayEquals(expectedSortedTaskList,realSortedTaskList);
+    }
+
+    //Проверка пересечений, когда время старта задачи совпадает с предыдущей
+    @Test
+    void shouldCheckIntersection_IfTheStartDatesOfTheTasksAreTheSame(){
+//        TaskManager taskManager = new InMemoryTaskManager();
+        Task task1 = new Task("task1");
+        task1.setStartTime("02.03.2023|10:00");
+        task1.setDuration(30);
+        Task task2 = new Task("task2");
+        task2.setStartTime("02.03.2023|11:00");
+        task2.setDuration(30);
+        //Пересечение времени старта с task2
+        Task task3 = new Task("task3");
+        task3.setStartTime("02.03.2023|11:00");
+        task3.setDuration(30);
+        Task task4 = new Task("task4");
+        task4.setStartTime("02.03.2023|13:00");
+        task4.setDuration(30);
+        taskManager1.addSimpleTask(task1);
+        taskManager1.addSimpleTask(task2);
+        taskManager1.addSimpleTask(task3);
+        taskManager1.addSimpleTask(task4);
+
+        Task[] expectedSortedTaskList = new Task[]{task1,task2,task4,task3};
+       // Task[] realSortedTaskList = ((InMemoryTaskManager)taskManager).getPrioritizedTasks().toArray(Task[]::new);
+        List<Task> realSortedTaskList =  ((InMemoryTaskManager)taskManager1).getPrioritizedTasks();
+        assertArrayEquals(expectedSortedTaskList,realSortedTaskList.toArray(Task[]::new));
+        assertNull(realSortedTaskList.get(realSortedTaskList.size()-1).getStartTime());
+        assertNull(realSortedTaskList.get(realSortedTaskList.size()-1).getDuration());
+    }
+
+// Проверка пересечений, когда задача начинается во время выполнения предыдущей
+    @Test
+    void shouldCheckIntersrection_WhenNewTaskStartsAtTimeWhenThePreviousHasNotYetFinished(){
+        Task task1 = new Task("task1");
+        task1.setStartTime("02.03.2023|10:00");
+        task1.setDuration(30);
+        Task task2 = new Task("task2");
+        task2.setStartTime("02.03.2023|11:00");
+        task2.setDuration(30);
+        //Пересечение времени старта с task2
+        Task task3 = new Task("task3");
+        task3.setStartTime("02.03.2023|10:30");
+        task3.setDuration(30);
+        Task task4 = new Task("task4");
+        task4.setStartTime("02.03.2023|13:00");
+        task4.setDuration(30);
+        taskManager1.addSimpleTask(task1);
+        taskManager1.addSimpleTask(task2);
+        taskManager1.addSimpleTask(task3);
+        taskManager1.addSimpleTask(task4);
+        Task[] expectedSortedTaskList = new Task[]{task1,task2,task4,task3};
+        List<Task> realSortedTaskList =  ((InMemoryTaskManager)taskManager1).getPrioritizedTasks();
+        assertArrayEquals(expectedSortedTaskList,realSortedTaskList.toArray(Task[]::new));
+        assertNull(realSortedTaskList.get(realSortedTaskList.size()-1).getStartTime());
+        assertNull(realSortedTaskList.get(realSortedTaskList.size()-1).getDuration());
     }
 }
