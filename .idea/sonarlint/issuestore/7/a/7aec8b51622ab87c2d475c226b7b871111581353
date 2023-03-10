@@ -1,0 +1,8 @@
+
+’
+java:S1319$"pThe return type of this method should be an interface such as "List" rather than the implementation "ArrayList".(¡¨¹æûÿÿÿÿ8­â¶¿ê0
+U	java:S106J"9Replace this use of System.out or System.err by a logger.(öÌ»8ïâ¶¿ê0
+o
+java:S1871t"MThis branch's code block is the same as the block for the branch on line 113.(€öÍúÿÿÿÿ8òâ¶¿ê0
+p
+java:S1871‚"MThis branch's code block is the same as the block for the branch on line 127.(šøÒäûÿÿÿÿ8ôâ¶¿ê0
