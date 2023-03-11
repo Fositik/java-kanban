@@ -1,4 +1,5 @@
-package ru.yandex.practicum;
+package ru.yandex.practicum.http;
+
 import static java.nio.charset.StandardCharsets.UTF_8;
 
 import java.io.IOException;
@@ -8,11 +9,20 @@ import java.util.Map;
 
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpServer;
+
 public class KVServer {
     public static final int PORT = 8078;
     private final String apiToken;
     private final HttpServer server;
     private final Map<String, String> data = new HashMap<>();
+
+    /**
+     * KVServer — это хранилище, где данные хранятся по принципу <ключ-значение>. Он умеет:
+     * GET /register — регистрировать клиента и выдавать уникальный токен доступа (аутентификации).
+     * Это нужно, чтобы хранилище могло работать сразу с несколькими клиентами.
+     * POST /save/<ключ>?API_TOKEN= — сохранять содержимое тела запроса, привязанное к ключу.
+     * GET /load/<ключ>?API_TOKEN= — возвращать сохранённые значение по ключу.
+     */
     public KVServer() throws IOException {
         apiToken = generateApiToken();
         server = HttpServer.create(new InetSocketAddress("localhost", PORT), 0);
@@ -20,9 +30,41 @@ public class KVServer {
         server.createContext("/save", this::save);
         server.createContext("/load", this::load);
     }
-    private void load(HttpExchange h) {
-        // TODO Добавьте получение значения по ключу
+
+    private void load(HttpExchange h) { //GET /load/<ключ>?API_TOKEN= — возвращать сохранённые значение по ключу.
+        try {
+            System.out.println("\n/load");
+            if(!hasAuth(h)){
+                System.out.println("Запрос неавторизован, нужен параметр в query API_TOKEN со значением апи-ключа");
+                h.sendResponseHeaders(403, 0);
+                return;
+            }
+            if ("GET".equals(h.getRequestMethod())) {
+                String key = h.getRequestURI().getPath().substring("/load/".length());
+                if (key.isEmpty()) {
+                    System.out.println("Key для сохранения пустой. key указывается в пути: /load/{key}");
+                    h.sendResponseHeaders(400, 0);
+                    return;
+                }
+                if (data.get(key) == null) {
+                    System.out.println("Данные для ключа '" + key + "', отсутствуют");
+                    h.sendResponseHeaders(404, 0);
+                    return;
+                }
+                String response = data.get(key);
+                sendText(h, response);
+                System.out.println("Данные для ключа " + key + " успешно отправлено в ответ на запрос!");
+                h.sendResponseHeaders(200, 0);
+            } else {
+                System.out.println("/load ждет GET-запрос, а получил: " + h.getRequestMethod());
+                h.sendResponseHeaders(405, 0);
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
+
+
     private void save(HttpExchange h) throws IOException {
         try {
             System.out.println("\n/save");
@@ -55,6 +97,7 @@ public class KVServer {
             h.close();
         }
     }
+
     private void register(HttpExchange h) throws IOException {
         try {
             System.out.println("\n/register");
@@ -68,6 +111,7 @@ public class KVServer {
             h.close();
         }
     }
+
     public void start() {
         System.out.println("Запускаем сервер на порту " + PORT);
         System.out.println("Открой в браузере http://localhost:" + PORT + "/");

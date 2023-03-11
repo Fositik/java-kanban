@@ -2,19 +2,12 @@ package ru.yandex.practicum.service;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 
 public class Subtask extends Task {
 
-    //private int epicId;  //переменная больше не нужна
-    /*Так как раньше мы передавали в качестве параметра и epicId и сам класс Epic, что было излишним
-    Было решено оставить только Epic
-    Соответственно, код был переработан
-     */
-//    protected Duration duration; //продолжительность задачи, оценка того, сколько времени она займёт в минутах (число);
-//    protected LocalDateTime startTime; //дата, когда предполагается приступить к выполнению задачи.
-//    public static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy|HH:mm");
+    private int epicId;  //Возвращаем переменную
+
     private Epic epic;
 
     public Subtask(String name, String description, Status status, Epic epic) {
@@ -25,10 +18,6 @@ public class Subtask extends Task {
     /**
      * Так как для чтения подзадач из CSV файла было необходимо указать epicId, а нужного конструктора у меня не было,
      * пришлось создать еще один конструктор без параметра Task
-     *
-     * @param name
-     * @param description
-     * @param status
      */
     public Subtask(String name, String description, Status status) {
         super(name, description, status);
@@ -37,6 +26,14 @@ public class Subtask extends Task {
     public Subtask(String name, String description, Epic epic) {
         super(name, description);
         this.epic = epic;
+    }
+
+    public int getEpicId() {
+        return epicId;
+    }
+
+    public void setEpicId(int epicId) {
+        this.epicId = epicId;
     }
 
     public Subtask(String name, Epic epic) {
@@ -59,17 +56,18 @@ public class Subtask extends Task {
         this.epic = epic;
     }
 
+
     public Subtask(String name) {
         super(name);
     }
 
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
+//    public String getDescription() {
+//        return description;
+//    }
+//
+//    public void setDescription(String description) {
+//        this.description = description;
+//    }
 
     public Epic getEpic() {
         return epic;
@@ -77,14 +75,7 @@ public class Subtask extends Task {
 
     public void setEpic(Epic epic) {
         this.epic = epic;
-        //this.epicId = epic.getId();
     }
-//    public int getEpicId(){
-//        return epicId;
-//    }
-//    public void setEpicId(int epicId){
-//        this.epicId = epicId;
-//    }
 
     @Override
     public boolean equals(Object o) {

@@ -110,6 +110,10 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
         return updatedSubtask;
     }
 
+    public void linkEpicToSubtask(Subtask subtask,int epicId){
+        subtask.setEpic(epics.get(epicId));
+    }
+
     /**
      * "id,type,name,status,description,epic"
      *
