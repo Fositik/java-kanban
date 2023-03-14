@@ -1,0 +1,448 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <title>Coverage Report > FileBackedTasksManager</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">ru.yandex.practicum.model</a>
+</div>
+
+<h1>Coverage Summary for Class: FileBackedTasksManager (ru.yandex.practicum.model)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">FileBackedTasksManager</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    87,5%
+  </span>
+  <span class="absValue">
+    (21/24)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    83,5%
+  </span>
+  <span class="absValue">
+    (142/170)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package ru.yandex.practicum.model;
+&nbsp;
+&nbsp;import ru.yandex.practicum.service.Epic;
+&nbsp;import ru.yandex.practicum.service.Status;
+&nbsp;import ru.yandex.practicum.service.Subtask;
+&nbsp;import ru.yandex.practicum.service.Task;
+&nbsp;
+&nbsp;import java.io.*;
+&nbsp;import java.time.Duration;
+&nbsp;import java.time.LocalDateTime;
+&nbsp;import java.util.ArrayList;
+&nbsp;import java.util.List;
+&nbsp;import java.util.Locale;
+&nbsp;
+&nbsp;import static java.nio.charset.StandardCharsets.UTF_8;
+&nbsp;
+&nbsp;public class FileBackedTasksManager extends InMemoryTaskManager {
+&nbsp;    private static final String START_STRING = &quot;id,type,name,status,description,startTime,duration,epic\n&quot;;
+&nbsp;    protected final String path;
+&nbsp;
+&nbsp;    //    public FileBackedTasksManager(HistoryManager historyManager){
+&nbsp;//        super(historyManager);
+&nbsp;//    }
+<b class="fc">&nbsp;    public FileBackedTasksManager(String path) {</b>
+<b class="fc">&nbsp;        this.path = path;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Override
+&nbsp;    public void addSimpleTask(Task task) {
+<b class="fc">&nbsp;        super.addSimpleTask(task);</b>
+<b class="fc">&nbsp;        save();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Override
+&nbsp;    public void addEpic(Epic epic) {
+<b class="fc">&nbsp;        super.addEpic(epic);</b>
+<b class="fc">&nbsp;        save();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Override
+&nbsp;    public void addSubtask(Subtask subtask, Epic epic) {
+<b class="fc">&nbsp;        super.addSubtask(subtask, epic);</b>
+<b class="fc">&nbsp;        save();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Override
+&nbsp;    public Subtask getSubtaskById(int subtaskId) {
+<b class="fc">&nbsp;        Subtask subtask = super.getSubtaskById(subtaskId);</b>
+<b class="fc">&nbsp;        save();</b>
+<b class="fc">&nbsp;        return subtask;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Override
+&nbsp;    public Epic getEpicById(int epicId) {
+<b class="fc">&nbsp;        Epic epic = super.getEpicById(epicId);</b>
+<b class="fc">&nbsp;        save();</b>
+<b class="fc">&nbsp;        return epic;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public Epic getEpic(int epicId) {
+<b class="fc">&nbsp;        return epics.get(epicId);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Override
+&nbsp;    public Task getSimpleTaskById(int taskId) {
+<b class="fc">&nbsp;        Task task = super.getSimpleTaskById(taskId);</b>
+<b class="fc">&nbsp;        save();</b>
+<b class="fc">&nbsp;        return task;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Override
+&nbsp;    public void removeEpicById(int epicId) {
+<b class="fc">&nbsp;        super.removeEpicById(epicId);</b>
+<b class="fc">&nbsp;        save();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Override
+&nbsp;    public ArrayList&lt;Epic&gt; getAllEpics() {
+<b class="fc">&nbsp;        save();</b>
+<b class="fc">&nbsp;        return super.getAllEpics();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Override
+&nbsp;    public void removeSubtaskById(int subtaskId) {
+<b class="fc">&nbsp;        super.removeSubtaskById(subtaskId);</b>
+<b class="fc">&nbsp;        save();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Override
+&nbsp;    public void removeSimbletaskById(int simpleTaskId) {
+<b class="fc">&nbsp;        super.removeSimbletaskById(simpleTaskId);</b>
+<b class="fc">&nbsp;        save();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Override
+&nbsp;    public Task updateSimpleTaskById(int taskId, Task task) {
+<b class="fc">&nbsp;        Task updatedSimpleTask = super.updateSimpleTaskById(taskId, task);</b>
+<b class="fc">&nbsp;        save();</b>
+<b class="fc">&nbsp;        return updatedSimpleTask;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Override
+&nbsp;    public Epic updateEpicById(int taskId, Epic epic) {
+<b class="fc">&nbsp;        Epic updatedEpic = super.updateEpicById(taskId, epic);</b>
+<b class="fc">&nbsp;        save();</b>
+<b class="fc">&nbsp;        return updatedEpic;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Override
+&nbsp;    public Subtask updateSubtask(int taskId, Subtask subtask) {
+<b class="fc">&nbsp;        Subtask updatedSubtask = super.updateSubtask(taskId, subtask);</b>
+<b class="fc">&nbsp;        save();</b>
+<b class="fc">&nbsp;        return updatedSubtask;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void linkEpicToSubtask(Subtask subtask, int epicId) {
+<b class="nc">&nbsp;        subtask.setEpic(epics.get(epicId));</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void linkSubtasksToEpic(Epic epic) {
+<b class="nc">&nbsp;        for (Subtask subtask : epic.getSubtasks()) {</b>
+<b class="nc">&nbsp;            linkEpicToSubtask(subtask, epic.getId());</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * &quot;id,type,name,status,description,epic&quot;
+&nbsp;     *
+&nbsp;     * @param task
+&nbsp;     * @return
+&nbsp;     */
+&nbsp;    private String toString(Task task) {
+<b class="fc">&nbsp;        String taskType = task.getClass().getSimpleName();          //Сокращенное название класса (не включая пакеты)</b>
+&nbsp;        String result;                                              //&quot;ru.yandex.practicum.service.Epic&quot; -&gt; &quot;Epic&quot;
+&nbsp;        String startTime;
+&nbsp;        long durationInMinutes;
+<b class="fc">&nbsp;        if (task.getStartTime() != null) {</b>
+<b class="fc">&nbsp;            startTime = task.getStartTime().format(Task.formatter);</b>
+&nbsp;        } else {
+<b class="fc">&nbsp;            startTime = null;</b>
+&nbsp;        }
+<b class="fc">&nbsp;        if (task.getDuration() != null) {</b>
+<b class="fc">&nbsp;            durationInMinutes = task.getDuration().toMinutes();</b>
+&nbsp;        } else {
+<b class="fc">&nbsp;            durationInMinutes = 0;</b>
+&nbsp;        }
+<b class="fc">&nbsp;        if (taskType.equals(&quot;Task&quot;) || taskType.equals(&quot;Epic&quot;)) {   //Если сокращенное название equals &quot;Task&quot; or &quot;Epic&quot;</b>
+<b class="fc">&nbsp;            result = String.format(&quot;%s,%s,%s,%s,%s,%s,%s&quot;,</b>
+<b class="fc">&nbsp;                    task.getId(),</b>
+<b class="fc">&nbsp;                    taskType.toUpperCase(Locale.ROOT),</b>
+<b class="fc">&nbsp;                    task.getName(),</b>
+<b class="fc">&nbsp;                    task.getStatus(),</b>
+<b class="fc">&nbsp;                    task.getDescription(),</b>
+&nbsp;                    startTime,
+<b class="fc">&nbsp;                    durationInMinutes);</b>
+&nbsp;        } else {
+<b class="fc">&nbsp;            result = String.format(&quot;%s,%s,%s,%s,%s,%s,%s,%s&quot;,         //since subtasks have one more parameter - &quot;epicid&quot;,</b>
+<b class="fc">&nbsp;                    task.getId(),                               //we need an alternative condition for their formatting</b>
+<b class="fc">&nbsp;                    taskType.toUpperCase(Locale.ROOT),</b>
+<b class="fc">&nbsp;                    task.getName(),</b>
+<b class="fc">&nbsp;                    task.getStatus(),</b>
+<b class="fc">&nbsp;                    task.getDescription(),</b>
+&nbsp;                    startTime,
+<b class="fc">&nbsp;                    durationInMinutes,</b>
+<b class="fc">&nbsp;                    ((Subtask) task).getEpic().getId());        //Используем явное приведение task к Subtask</b>
+&nbsp;        }
+<b class="fc">&nbsp;        return result;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    private Task fromString(String value) {
+<b class="fc">&nbsp;        String[] taskValues = value.split(&quot;,&quot;);</b>
+&nbsp;/**
+&nbsp; * taskValue[0] -&gt; id
+&nbsp; * taskValue[1] -&gt; type
+&nbsp; * taskValue[2] -&gt; name
+&nbsp; * taskValue[3] -&gt; status
+&nbsp; * taskValue[4] -&gt; description
+&nbsp; * taskValue[5] -&gt; startTime
+&nbsp; * taskValue[6] -&gt; duration
+&nbsp; * taskValue[7] -&gt; epic
+&nbsp; */
+<b class="fc">&nbsp;        String type = taskValues[1].toLowerCase(Locale.ROOT);</b>
+<b class="fc">&nbsp;        String taskType = type.substring(0, 1).toUpperCase(Locale.ROOT) + type.substring(1);</b>
+<b class="fc">&nbsp;        Task task = null;</b>
+<b class="fc">&nbsp;        switch (taskType) {             //Switch, I think the best solution in this situation</b>
+&nbsp;            case &quot;Task&quot;:
+<b class="fc">&nbsp;                task = new Task(taskValues[2], taskValues[4], Status.valueOf(taskValues[3]));</b>
+<b class="fc">&nbsp;                task.setId(Integer.parseInt(taskValues[0])); //Парсим, так как на вход подается строка, а нам нужен int</b>
+&nbsp;                // Устанваливаем Id отдельно, так как в конструкторе не предусмотрен такой параметр
+&nbsp;                //  historyManager.add(simpleTasks.get(task.getId()));
+&nbsp;                // historyManager.add(task);
+<b class="fc">&nbsp;                break;</b>
+&nbsp;            case &quot;Epic&quot;:
+<b class="fc">&nbsp;                task = new Epic(taskValues[2], taskValues[4], Status.valueOf(taskValues[3]));</b>
+<b class="fc">&nbsp;                task.setId(Integer.parseInt(taskValues[0]));</b>
+&nbsp;                //  historyManager.add(simpleTasks.get(task.getId()));
+&nbsp;                //  historyManager.add(task);
+<b class="fc">&nbsp;                break;</b>
+&nbsp;            case &quot;Subtask&quot;:
+<b class="fc">&nbsp;                task = new Subtask(taskValues[2], taskValues[4], Status.valueOf(taskValues[3]));</b>
+<b class="fc">&nbsp;                task.setId(Integer.parseInt(taskValues[0]));</b>
+<b class="fc">&nbsp;                int epicId = Integer.parseInt(taskValues[7]);</b>
+&nbsp;                //  historyManager.add(simpleTasks.get(task.getId()));
+&nbsp;                // historyManager.add(task);
+<b class="fc">&nbsp;                if (epics.containsKey(epicId)) {</b>
+<b class="fc">&nbsp;                    ((Subtask) task).setEpic(getEpic(epicId));</b>
+<b class="fc">&nbsp;                    getEpic(epicId).getSubtasks().add((Subtask) task);</b>
+&nbsp;                }
+&nbsp;                break;
+&nbsp;        }
+<b class="fc">&nbsp;        if (task != null) {</b>
+<b class="fc">&nbsp;            if (!taskValues[5].equals(&quot;null&quot;)) {</b>
+<b class="fc">&nbsp;                task.setStartTime(taskValues[5]);</b>
+&nbsp;            }
+&nbsp;//             else {
+&nbsp;//                task.setStartTime(task.getStartTime());
+&nbsp;//            }
+<b class="fc">&nbsp;            if (!taskValues[6].equals(&quot;0&quot;)) {</b>
+<b class="fc">&nbsp;                task.setDuration(Long.parseLong(taskValues[6]));</b>
+&nbsp;            }
+&nbsp;        }
+<b class="fc">&nbsp;        return task;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    static String historyToString(HistoryManager manager) {
+<b class="fc">&nbsp;        List&lt;Task&gt; browsingHistory = manager.getHistory();</b>
+<b class="fc">&nbsp;        StringBuilder historyId = new StringBuilder();</b>
+<b class="fc">&nbsp;        historyId.append(&quot;\n&quot;);</b>
+&nbsp;        //Цикл fori, чтобы определить, является элемент последним (после последнего элемента запятая не нужна)
+<b class="fc">&nbsp;        for (int i = 0; i &lt; browsingHistory.size(); i++) {</b>
+<b class="fc">&nbsp;            if (i == browsingHistory.size() - 1) {</b>
+<b class="fc">&nbsp;                historyId.append(String.format(&quot;%d&quot;, browsingHistory.get(i).getId()));</b>
+&nbsp;            } else {
+<b class="fc">&nbsp;                historyId.append(String.format(&quot;%d,&quot;, browsingHistory.get(i).getId()));</b>
+&nbsp;            }
+&nbsp;        }
+<b class="fc">&nbsp;        return historyId.toString();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    static List&lt;Integer&gt; historyFromString(String value) {
+<b class="fc">&nbsp;        List&lt;Integer&gt; historyId = new ArrayList&lt;&gt;();</b>
+<b class="fc">&nbsp;        String[] browsingHistoryId = value.split(&quot;,&quot;);</b>
+<b class="fc">&nbsp;        for (String s : browsingHistoryId) {</b>
+<b class="fc">&nbsp;            historyId.add(Integer.parseInt(s));</b>
+&nbsp;        }
+<b class="fc">&nbsp;        return historyId;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;
+&nbsp;    protected void save() {
+<b class="fc">&nbsp;        try (FileWriter fileWriter = new FileWriter(path, UTF_8)) {</b>
+<b class="fc">&nbsp;            fileWriter.write(START_STRING);</b>
+<b class="fc">&nbsp;            for (Task simpleTask : simpleTasks.values()) {</b>
+<b class="fc">&nbsp;                fileWriter.write(toString(simpleTask) + &quot;\n&quot;);</b>
+<b class="fc">&nbsp;            }</b>
+<b class="fc">&nbsp;            for (Epic epic : epics.values()) {</b>
+<b class="fc">&nbsp;                fileWriter.write(toString(epic) + &quot;\n&quot;);</b>
+<b class="fc">&nbsp;            }</b>
+<b class="fc">&nbsp;            for (Subtask subtask : subtasks.values()) {</b>
+<b class="fc">&nbsp;                fileWriter.write(toString(subtask) + &quot;\n&quot;);</b>
+<b class="fc">&nbsp;            }</b>
+<b class="fc">&nbsp;            if (historyManager.getHistory() != null) {</b>
+<b class="fc">&nbsp;                fileWriter.write(historyToString(historyManager));</b>
+&nbsp;            }
+<b class="fc">&nbsp;        } catch (IOException e) {</b>
+<b class="nc">&nbsp;            System.err.println(String.format(&quot;java-kanban\\%s&quot;, path));</b>
+<b class="nc">&nbsp;            e.getStackTrace();</b>
+&nbsp;
+<b class="fc">&nbsp;        }</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void loadFromFile(String path) {
+&nbsp;        //   FileBackedTasksManager fileBackedTasksManager = new FileBackedTasksManager(path);
+<b class="fc">&nbsp;        try (BufferedReader reader = new BufferedReader(new FileReader(path))) {</b>
+<b class="fc">&nbsp;            while (reader.ready()) {</b>
+<b class="fc">&nbsp;                String line = reader.readLine();</b>
+<b class="fc">&nbsp;                if (!line.isBlank()) {</b>
+<b class="fc">&nbsp;                    if (!line.equals(&quot;id,type,name,status,description,startTime,duration,epic&quot;)) {</b>
+<b class="fc">&nbsp;                        Task task = fromString(line);</b>
+<b class="fc">&nbsp;                        switch (task.getClass().getSimpleName()) {</b>
+&nbsp;                            case &quot;Task&quot;: //-&gt; simpleTasks.put(task.getId(), task);
+<b class="fc">&nbsp;                                simpleTasks.put(task.getId(), task);</b>
+<b class="fc">&nbsp;                                break;</b>
+&nbsp;                            case &quot;Epic&quot;://-&gt;epics.put(task.getId(), (Epic) task);
+<b class="fc">&nbsp;                                epics.put(task.getId(), (Epic) task);</b>
+<b class="fc">&nbsp;                                break;</b>
+&nbsp;                            case &quot;Subtask&quot;: //-&gt; subtasks.put(task.getId(), (Subtask) task);
+<b class="fc">&nbsp;                                subtasks.put(task.getId(), (Subtask) task);</b>
+&nbsp;                                break;
+&nbsp;                        }
+<b class="fc">&nbsp;                    }</b>
+&nbsp;                } else {
+<b class="fc">&nbsp;                    String newLine = reader.readLine(); //Пропуск строки</b>
+<b class="fc">&nbsp;                    List&lt;Integer&gt; historyId = historyFromString(newLine);</b>
+<b class="fc">&nbsp;                    Task task = null;</b>
+<b class="fc">&nbsp;                    for (Integer id : historyId) {</b>
+<b class="fc">&nbsp;                        if (simpleTasks.containsKey(id)) {</b>
+<b class="fc">&nbsp;                            task = simpleTasks.get(id);</b>
+<b class="fc">&nbsp;                            historyManager.add(task);</b>
+<b class="fc">&nbsp;                        } else if (epics.containsKey(id)) {</b>
+<b class="fc">&nbsp;                            task = epics.get(id);</b>
+<b class="fc">&nbsp;                            historyManager.add(task);</b>
+<b class="fc">&nbsp;                        } else if (subtasks.containsKey(id)) {</b>
+<b class="fc">&nbsp;                            task = subtasks.get(id);</b>
+<b class="fc">&nbsp;                            historyManager.add(task);</b>
+&nbsp;                        }
+<b class="fc">&nbsp;                    }</b>
+<b class="fc">&nbsp;                    if (task != null) {</b>
+<b class="fc">&nbsp;                        historyManager.add(task);</b>
+&nbsp;
+&nbsp;                    }
+&nbsp;                }
+<b class="fc">&nbsp;            }</b>
+<b class="fc">&nbsp;        } catch (IOException e) {</b>
+<b class="nc">&nbsp;            e.getStackTrace();</b>
+<b class="fc">&nbsp;        }</b>
+&nbsp;        //  return fileBackedTasksManager;
+&nbsp;    }
+&nbsp;
+&nbsp;    public static void main(String[] args) {
+<b class="nc">&nbsp;        FileBackedTasksManager fileBackedTasksManager = new FileBackedTasksManager(&quot;FileTest.csv&quot;);</b>
+<b class="nc">&nbsp;        final String path = &quot;test.csv&quot;;</b>
+<b class="nc">&nbsp;        final Managers managers = new Managers();</b>
+<b class="nc">&nbsp;        TaskManager firstManager = managers.getFileBackedTasksManager(&quot;FileTest.csv&quot;);</b>
+<b class="nc">&nbsp;        Epic epicTest = new Epic(&quot;E1&quot;, &quot;D1&quot;);</b>
+<b class="nc">&nbsp;        ((FileBackedTasksManager) firstManager).addEpic(epicTest);</b>
+<b class="nc">&nbsp;        Subtask subtask1 = new Subtask(&quot;S1&quot;, &quot;D1&quot;, LocalDateTime.now(), Duration.ofMinutes(45), epicTest);</b>
+<b class="nc">&nbsp;        ((FileBackedTasksManager) firstManager).addSubtask(subtask1, epicTest);</b>
+<b class="nc">&nbsp;        Subtask subtask2 = new Subtask(&quot;S2&quot;, &quot;D2&quot;, LocalDateTime.now(), Duration.ofMinutes(34), epicTest);</b>
+<b class="nc">&nbsp;        ((FileBackedTasksManager) firstManager).addSubtask(subtask2, epicTest);</b>
+<b class="nc">&nbsp;        Task task1 = new Task(&quot;T1&quot;, &quot;D1&quot;, LocalDateTime.now(), Duration.ofMinutes(43));</b>
+<b class="nc">&nbsp;        ((FileBackedTasksManager) firstManager).addSimpleTask(task1);</b>
+&nbsp;
+<b class="nc">&nbsp;        firstManager.getSimpleTaskById(task1.getId());</b>
+<b class="nc">&nbsp;        firstManager.getEpicById(epicTest.getId());</b>
+<b class="nc">&nbsp;        firstManager.getSubtaskById(subtask1.getId());</b>
+<b class="nc">&nbsp;        firstManager.getSubtaskById(subtask2.getId());</b>
+&nbsp;
+<b class="nc">&nbsp;        TaskManager secondManager = managers.getFileBackedTasksManager(&quot;FileTest.csv&quot;);</b>
+<b class="nc">&nbsp;        ((FileBackedTasksManager) secondManager).loadFromFile(&quot;FileTest.csv&quot;);</b>
+<b class="nc">&nbsp;        System.out.println(secondManager.getAllSimpleTasks());</b>
+<b class="nc">&nbsp;        System.out.println(secondManager.getAllEpics());</b>
+<b class="nc">&nbsp;        System.out.println(secondManager.getAllSubtasksByEpic(epicTest.getId()));</b>
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2023-03-14 22:21</div>
+</div>
+</body>
+</html>

@@ -61,14 +61,6 @@ public class Subtask extends Task {
         super(name);
     }
 
-//    public String getDescription() {
-//        return description;
-//    }
-//
-//    public void setDescription(String description) {
-//        this.description = description;
-//    }
-
     public Epic getEpic() {
         return epic;
     }

@@ -1,0 +1,170 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <title>Coverage Report > KVTaskClient</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">ru.yandex.practicum.http.client</a>
+</div>
+
+<h1>Coverage Summary for Class: KVTaskClient (ru.yandex.practicum.http.client)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">KVTaskClient</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    66,7%
+  </span>
+  <span class="absValue">
+    (2/3)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    52,9%
+  </span>
+  <span class="absValue">
+    (18/34)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package ru.yandex.practicum.http.client;
+&nbsp;
+&nbsp;import java.io.IOException;
+&nbsp;import java.net.URI;
+&nbsp;import java.net.URISyntaxException;
+&nbsp;import java.net.http.HttpClient;
+&nbsp;import java.net.http.HttpRequest;
+&nbsp;import java.net.http.HttpResponse;
+&nbsp;
+&nbsp;import static java.nio.charset.StandardCharsets.*;
+&nbsp;
+&nbsp;public class KVTaskClient {
+&nbsp;    private final String serverURL; //Конструктор принимает URL к серверу хранилища и регистрируется.
+&nbsp;    private final String API_TOKEN; // При регистрации выдаётся токен (API_TOKEN), который нужен при работе с сервером.
+&nbsp;
+<b class="fc">&nbsp;    private final HttpClient client = HttpClient.newHttpClient();</b>
+&nbsp;
+<b class="fc">&nbsp;    public KVTaskClient(String serverURL) throws IOException, URISyntaxException, InterruptedException {</b>
+<b class="fc">&nbsp;        this.serverURL = serverURL;</b>
+<b class="fc">&nbsp;        URI uri = new URI(this.serverURL + &quot;/register&quot;);</b>
+<b class="fc">&nbsp;        HttpRequest httpRequest = HttpRequest.newBuilder()</b>
+<b class="fc">&nbsp;                .uri(uri)</b>
+<b class="fc">&nbsp;                .GET()</b>
+<b class="fc">&nbsp;                .build();</b>
+&nbsp;        //Класс, описывающий запрос, который необходимо отправить - HttpResponse.BodyHandler&lt;T&gt;
+<b class="fc">&nbsp;        HttpResponse&lt;String&gt; response = client.send(httpRequest, HttpResponse.BodyHandlers.ofString());</b>
+<b class="fc">&nbsp;        API_TOKEN = response.body();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    //Метод void put(String key, String json) должен сохранять
+&nbsp;    // состояние менеджера задач через запрос POST /save/&lt;ключ&gt;?API_TOKEN=
+&nbsp;    public void put(String key, String json) {
+&nbsp;        try {
+<b class="fc">&nbsp;            URI uri = URI.create(this.serverURL + &quot;/save/&quot; + key + &quot;?API_TOKEN=&quot; + API_TOKEN);</b>
+<b class="fc">&nbsp;            HttpRequest request = HttpRequest.newBuilder()</b>
+&nbsp;                    // возвращает обработчик, позволяющий преобразовать тело ответа из набора байтов в строку.
+<b class="fc">&nbsp;                    .POST(HttpRequest.BodyPublishers.ofString(json)) // указываем HTTP-метод запроса</b>
+<b class="fc">&nbsp;                    .uri(uri) // указываем адрес ресурса</b>
+<b class="fc">&nbsp;                    .build();</b>
+<b class="fc">&nbsp;            HttpResponse&lt;String&gt; response = client.send(request,</b>
+<b class="fc">&nbsp;                    HttpResponse.BodyHandlers.ofString(UTF_8));</b>
+<b class="nc">&nbsp;        } catch (InterruptedException | IOException e) {</b>
+<b class="nc">&nbsp;            e.printStackTrace();</b>
+<b class="fc">&nbsp;        }</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    //Метод String load(String key) должен возвращать состояние менеджера задач
+&nbsp;    // через запрос GET /load/&lt;ключ&gt;?API_TOKEN=.
+&nbsp;    public String load(String key) {
+&nbsp;        try {
+<b class="nc">&nbsp;            URI uri = URI.create(this.serverURL + &quot;/load/&quot; + key + &quot;?API_TOKEN=&quot; + API_TOKEN);</b>
+<b class="nc">&nbsp;            HttpRequest request = HttpRequest.newBuilder()</b>
+<b class="nc">&nbsp;                    .GET() // указываем HTTP-метод запроса</b>
+<b class="nc">&nbsp;                    .uri(uri) // указываем адрес ресурса</b>
+<b class="nc">&nbsp;                    .build();</b>
+<b class="nc">&nbsp;            HttpResponse&lt;String&gt; response = client.send(request,</b>
+<b class="nc">&nbsp;                    HttpResponse.BodyHandlers.ofString(UTF_8));</b>
+<b class="nc">&nbsp;            if (response.body() != null) {</b>
+<b class="nc">&nbsp;                return response.body(); // выводим тело ответа</b>
+&nbsp;            }
+<b class="nc">&nbsp;        } catch (IOException | InterruptedException e) {</b>
+<b class="nc">&nbsp;            e.printStackTrace();</b>
+<b class="nc">&nbsp;            return &quot;Во время запроса произошла ошибка&quot;;</b>
+<b class="nc">&nbsp;        }</b>
+<b class="nc">&nbsp;        return null;</b>
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2023-03-14 22:21</div>
+</div>
+</body>
+</html>

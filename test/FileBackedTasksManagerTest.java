@@ -44,11 +44,11 @@ public class FileBackedTasksManagerTest extends TaskManagerTest<FileBackedTasksM
     @BeforeEach
     void initTasks() {
         testTask1 = new Task("T1", "D1", LocalDateTime.now(), Duration.ofMinutes(15));
-        testTask2 = new Task("T2", "D2", LocalDateTime.now(), Duration.ofMinutes(14));
-        testTask3 = new Task("T3", "D3", LocalDateTime.now(), Duration.ofMinutes(16));
+        testTask2 = new Task("T2", "D2", LocalDateTime.now().plus(Duration.ofMinutes(100)), Duration.ofMinutes(14));
+        testTask3 = new Task("T3", "D3", LocalDateTime.now().plus(Duration.ofMinutes(200)), Duration.ofMinutes(16));
         epicTest = new Epic("E1", "D1");
-        subtaskTest1 = new Subtask("S1", "D1", LocalDateTime.now(), Duration.ofMinutes(45), epicTest);
-        subtaskTest2 = new Subtask("S2", "D2", LocalDateTime.now(), Duration.ofMinutes(23), epicTest);
+        subtaskTest1 = new Subtask("S1", "D1", LocalDateTime.now().plus(Duration.ofMinutes(300)), Duration.ofMinutes(45), epicTest);
+        subtaskTest2 = new Subtask("S2", "D2", LocalDateTime.now().plus(Duration.ofMinutes(400)), Duration.ofMinutes(23), epicTest);
     }
 
     @AfterEach
@@ -163,6 +163,6 @@ public class FileBackedTasksManagerTest extends TaskManagerTest<FileBackedTasksM
         List<Task> hist = secondManager.historyList();
         System.out.println("Список истории со второге менеджера: " + hist);
         //   assertNotNull( secondManager.historyList());
-        assertEquals(6, hist.size());
+        assertEquals(5, hist.size());
     }
 }

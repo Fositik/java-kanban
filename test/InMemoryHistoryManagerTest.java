@@ -1,12 +1,11 @@
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import ru.yandex.practicum.model.HistoryManager;
 import ru.yandex.practicum.model.InMemoryHistoryManager;
 import ru.yandex.practicum.service.Task;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class InMemoryHistoryManagerTest{
+class InMemoryHistoryManagerTest {
     /**<T extends HistoryManager>*/ //отбросим
     /**
      * Для HistoryManager — тесты для всех методов интерфейса. Граничные условия:
@@ -44,31 +43,32 @@ class InMemoryHistoryManagerTest{
     }
 
     @Test
-    void shouldRemoveTaskFromTheTopOfTheHistoryList(){
+    void shouldRemoveTaskFromTheTopOfTheHistoryList() {
         inMemoryHistoryManager.add(task1);
         inMemoryHistoryManager.add(task2);
         inMemoryHistoryManager.add(task3);
         inMemoryHistoryManager.remove(task1.getId());
-        Task[] expectedHistoryList = new Task[]{task2,task3};
-        assertArrayEquals(expectedHistoryList,inMemoryHistoryManager.getHistory().toArray(Task[]::new));
+        Task[] expectedHistoryList = new Task[]{task2, task3};
+        assertArrayEquals(expectedHistoryList, inMemoryHistoryManager.getHistory().toArray(Task[]::new));
     }
 
     @Test
-    void shouldRemoveTaskFromTheEndOfTheHistoryList(){
+    void shouldRemoveTaskFromTheEndOfTheHistoryList() {
         inMemoryHistoryManager.add(task1);
         inMemoryHistoryManager.add(task2);
         inMemoryHistoryManager.add(task3);
         inMemoryHistoryManager.remove(task3.getId());
-        Task[] expectedHistoryList = new Task[]{task1,task2};
-        assertArrayEquals(expectedHistoryList,inMemoryHistoryManager.getHistory().toArray(Task[]::new));
+        Task[] expectedHistoryList = new Task[]{task1, task2};
+        assertArrayEquals(expectedHistoryList, inMemoryHistoryManager.getHistory().toArray(Task[]::new));
     }
+
     @Test
-    void shouldRemoveTaskFromTheMidOfTheHistoryList(){
+    void shouldRemoveTaskFromTheMidOfTheHistoryList() {
         inMemoryHistoryManager.add(task1);
         inMemoryHistoryManager.add(task2);
         inMemoryHistoryManager.add(task3);
         inMemoryHistoryManager.remove(task2.getId());
-        Task[] expectedHistoryList = new Task[]{task1,task3};
-        assertArrayEquals(expectedHistoryList,inMemoryHistoryManager.getHistory().toArray(Task[]::new));
+        Task[] expectedHistoryList = new Task[]{task1, task3};
+        assertArrayEquals(expectedHistoryList, inMemoryHistoryManager.getHistory().toArray(Task[]::new));
     }
 }

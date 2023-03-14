@@ -1,0 +1,129 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <title>Coverage Report > TaskManager</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">ru.yandex.practicum.model</a>
+</div>
+
+<h1>Coverage Summary for Class: TaskManager (ru.yandex.practicum.model)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+</tr>
+<tr>
+  <td class="name">TaskManager</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package ru.yandex.practicum.model;
+&nbsp;
+&nbsp;import ru.yandex.practicum.service.Epic;
+&nbsp;import ru.yandex.practicum.service.Subtask;
+&nbsp;import ru.yandex.practicum.service.Task;
+&nbsp;
+&nbsp;import java.util.ArrayList;
+&nbsp;import java.util.List;
+&nbsp;
+&nbsp;//Метод таск менеджер переделали в интерфейс
+&nbsp;public interface TaskManager {
+&nbsp;    //Метод для добавления простой задачи
+&nbsp;    void addSimpleTask(Task task);
+&nbsp;
+&nbsp;    //Метод для добавления эпика
+&nbsp;    void addEpic(Epic epic);
+&nbsp;
+&nbsp;    //Метод для добавления подзадачи
+&nbsp;    void addSubtask(Subtask subtask, Epic epic);
+&nbsp;
+&nbsp;    //Метод для нахождения подзадачи по id
+&nbsp;    Subtask getSubtaskById(int subtaskId);
+&nbsp;
+&nbsp;    Epic getEpicById(int epicId);
+&nbsp;
+&nbsp;    Task getSimpleTaskById(int simpleTaskId);
+&nbsp;
+&nbsp;    //Метод для получения списка просых задач
+&nbsp;    ArrayList&lt;Task&gt; getAllSimpleTasks();
+&nbsp;
+&nbsp;    //Метод для получения списка эпиков
+&nbsp;    ArrayList&lt;Epic&gt; getAllEpics();
+&nbsp;
+&nbsp;    //Метод для получения списка подзадач
+&nbsp;    ArrayList&lt;Subtask&gt; getAllSubtasksByEpic(int epicId);
+&nbsp;
+&nbsp;    //Метод для удаления простой задачи по id
+&nbsp;    void removeSimbletaskById(int simpleTaskId);
+&nbsp;
+&nbsp;    //Метод для удаления эпика по id
+&nbsp;    void removeEpicById(int epicId);
+&nbsp;
+&nbsp;    //Метод для удаления подзадачи по id
+&nbsp;    void removeSubtaskById(int subtaskId);
+&nbsp;
+&nbsp;    //Метод для обновления задачи по id
+&nbsp;    Task updateSimpleTaskById(int taskId, Task task);
+&nbsp;
+&nbsp;    //Метод для обновления эпика по id
+&nbsp;    Epic updateEpicById(int taskId, Epic epic);
+&nbsp;
+&nbsp;    //Метод для обновления задачи по id
+&nbsp;    Subtask updateSubtask(int taskId, Subtask subtask);
+&nbsp;
+&nbsp;    void removeAllSimpleTasks();
+&nbsp;
+&nbsp;    void removeAllSubtasks();
+&nbsp;
+&nbsp;    void removeAllEpics();
+&nbsp;
+&nbsp;    List&lt;Task&gt; historyList();
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2023-03-14 22:21</div>
+</div>
+</body>
+</html>

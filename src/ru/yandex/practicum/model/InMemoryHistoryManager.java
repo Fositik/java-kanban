@@ -13,9 +13,9 @@ public class InMemoryHistoryManager implements HistoryManager {
     public void add(Task task) {
         if (history.map.containsKey(task.getId())) {                //Если в списке уже содержится такая задача,
             remove(task.getId());                                   //удаляем предыдущую запись
-        }
-        history.linkLast(task);                                     //и добавляем ее в конец
-      //  System.out.println(history.map.values());
+        } else
+            history.linkLast(task);                                     //и добавляем ее в конец
+        //  System.out.println(history.map.values());
     }
 
     @Override
@@ -33,6 +33,7 @@ public class InMemoryHistoryManager implements HistoryManager {
 
     /**
      * Кастомный LinkedList
+     *
      * @param <E>
      */
     private static class CustomLinkedList<E extends Task> {
@@ -42,7 +43,7 @@ public class InMemoryHistoryManager implements HistoryManager {
         private final Map<Integer, Node<E>> map = new HashMap<>(); //мапа, которая в ключе хранит id задачи, а в значении узел связанного списка
 
         private void linkLast(E value) {
-            if (head==null) {                          //В первую очередь, проверям, пуст ли наш связанный список
+            if (head == null) {                          //В первую очередь, проверям, пуст ли наш связанный список
                 Node<E> currentNode = new Node<>(value); //Новая нода
                 map.put(value.getId(), currentNode);     //Добавляем новую ноду в мапу
                 head = currentNode;                      //Текущая нода - это голова списка
@@ -78,9 +79,9 @@ public class InMemoryHistoryManager implements HistoryManager {
         }
 
         private void removeNode(Node<E> value) {
-            if(size==0)
+            if (size == 0)
                 return;
-            else if (size ==1) {                     //Если список пуст
+            else if (size == 1) {                     //Если список пуст
                 head = null;
             } else if (head == value) {             //Если нода, которую хотим удалить - голова
                 if (size == 2) {                    //Если список содержит всего две ноды

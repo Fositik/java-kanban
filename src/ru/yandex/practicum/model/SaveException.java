@@ -1,7 +1,7 @@
 package ru.yandex.practicum.model;
 
-public class SaveException extends RuntimeException{
-    public SaveException(){
+public class SaveException extends RuntimeException {
+    public SaveException() {
         super();
     }
 }

@@ -1,5 +1,3 @@
-
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import ru.yandex.practicum.model.InMemoryTaskManager;
 import ru.yandex.practicum.model.TaskManager;
@@ -24,13 +22,18 @@ import static org.junit.jupiter.api.Assertions.*;
  * c. С неверным идентификатором задачи (пустой и/или несуществующий идентификатор).
  */
 public class InMemoryTaskManagerTest extends TaskManagerTest<InMemoryTaskManager> {
-  // InMemoryTaskManager taskManager1;
+    // InMemoryTaskManager taskManager1;
     private TaskManager taskManager1 = new InMemoryTaskManager();
     private final String startTime = "02.03.2023|10:00";
     Epic epic1;
     Subtask subtask1;
     Subtask subtask2;
     Task task;
+//@BeforeEach
+//public void beforeEach() {
+//    manager = new InMemoryTaskManager(Managers.getDefaultHistory());
+//}
+
 
     public InMemoryTaskManagerTest() {
         super(new InMemoryTaskManager());
@@ -131,14 +134,14 @@ public class InMemoryTaskManagerTest extends TaskManagerTest<InMemoryTaskManager
         taskManager.addSimpleTask(task2);
         taskManager.addSimpleTask(task3);
         taskManager.addSimpleTask(task4);
-        Task[] expectedSortedTaskList = new Task[]{task1,task2,task4,task3};
-        Task[] realSortedTaskList = ((InMemoryTaskManager)taskManager).getPrioritizedTasks().toArray(Task[]::new);
-        assertArrayEquals(expectedSortedTaskList,realSortedTaskList);
+        Task[] expectedSortedTaskList = new Task[]{task1, task2, task4, task3};
+        Task[] realSortedTaskList = ((InMemoryTaskManager) taskManager).getPrioritizedTasks().toArray(Task[]::new);
+        assertArrayEquals(expectedSortedTaskList, realSortedTaskList);
     }
 
     //Проверка пересечений, когда время старта задачи совпадает с предыдущей
     @Test
-    void shouldCheckIntersection_IfTheStartDatesOfTheTasksAreTheSame(){
+    void shouldCheckIntersection_IfTheStartDatesOfTheTasksAreTheSame() {
 //        TaskManager taskManager = new InMemoryTaskManager();
         Task task1 = new Task("task1");
         task1.setStartTime("02.03.2023|10:00");
@@ -158,17 +161,17 @@ public class InMemoryTaskManagerTest extends TaskManagerTest<InMemoryTaskManager
         taskManager1.addSimpleTask(task3);
         taskManager1.addSimpleTask(task4);
 
-        Task[] expectedSortedTaskList = new Task[]{task1,task2,task4,task3};
-       // Task[] realSortedTaskList = ((InMemoryTaskManager)taskManager).getPrioritizedTasks().toArray(Task[]::new);
-        List<Task> realSortedTaskList =  ((InMemoryTaskManager)taskManager1).getPrioritizedTasks();
-        assertArrayEquals(expectedSortedTaskList,realSortedTaskList.toArray(Task[]::new));
-        assertNull(realSortedTaskList.get(realSortedTaskList.size()-1).getStartTime());
-        assertNull(realSortedTaskList.get(realSortedTaskList.size()-1).getDuration());
+        Task[] expectedSortedTaskList = new Task[]{task1, task2, task4, task3};
+        // Task[] realSortedTaskList = ((InMemoryTaskManager)taskManager).getPrioritizedTasks().toArray(Task[]::new);
+        List<Task> realSortedTaskList = ((InMemoryTaskManager) taskManager1).getPrioritizedTasks();
+        assertArrayEquals(expectedSortedTaskList, realSortedTaskList.toArray(Task[]::new));
+        assertNull(realSortedTaskList.get(realSortedTaskList.size() - 1).getStartTime());
+        assertNull(realSortedTaskList.get(realSortedTaskList.size() - 1).getDuration());
     }
 
-// Проверка пересечений, когда задача начинается во время выполнения предыдущей
+    // Проверка пересечений, когда задача начинается во время выполнения предыдущей
     @Test
-    void shouldCheckIntersrection_WhenNewTaskStartsAtTimeWhenThePreviousHasNotYetFinished(){
+    void shouldCheckIntersrection_WhenNewTaskStartsAtTimeWhenThePreviousHasNotYetFinished() {
         Task task1 = new Task("task1");
         task1.setStartTime("02.03.2023|10:00");
         task1.setDuration(30);
@@ -186,10 +189,10 @@ public class InMemoryTaskManagerTest extends TaskManagerTest<InMemoryTaskManager
         taskManager1.addSimpleTask(task2);
         taskManager1.addSimpleTask(task3);
         taskManager1.addSimpleTask(task4);
-        Task[] expectedSortedTaskList = new Task[]{task1,task2,task4,task3};
-        List<Task> realSortedTaskList =  ((InMemoryTaskManager)taskManager1).getPrioritizedTasks();
-        assertArrayEquals(expectedSortedTaskList,realSortedTaskList.toArray(Task[]::new));
-        assertNull(realSortedTaskList.get(realSortedTaskList.size()-1).getStartTime());
-        assertNull(realSortedTaskList.get(realSortedTaskList.size()-1).getDuration());
+        Task[] expectedSortedTaskList = new Task[]{task1, task2, task4, task3};
+        List<Task> realSortedTaskList = ((InMemoryTaskManager) taskManager1).getPrioritizedTasks();
+        assertArrayEquals(expectedSortedTaskList, realSortedTaskList.toArray(Task[]::new));
+        assertNull(realSortedTaskList.get(realSortedTaskList.size() - 1).getStartTime());
+        assertNull(realSortedTaskList.get(realSortedTaskList.size() - 1).getDuration());
     }
 }

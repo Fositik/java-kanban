@@ -89,8 +89,8 @@ public class Task {             //общими чертами для всех з
     }
 
     public void setStartTime(String startTime) {
-        if(startTime!=null)
-        this.startTime = LocalDateTime.parse(startTime, formatter);
+        if (startTime != null)
+            this.startTime = LocalDateTime.parse(startTime, formatter);
         else this.startTime = null;
     }
 

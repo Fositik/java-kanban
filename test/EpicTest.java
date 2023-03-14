@@ -72,7 +72,7 @@ class EpicTest {
     }
 
     @Test
-    public void allSubtasksMustHaveTheStatusIN_PROGRESS(){ //Подзадачи со статусом IN_PROGRESS.
+    public void allSubtasksMustHaveTheStatusIN_PROGRESS() { //Подзадачи со статусом IN_PROGRESS.
         epic.getSubtasks().add(subtask1);
         epic.getSubtasks().add(subtask2);
         subtask1.setEpic(epic);
@@ -81,7 +81,7 @@ class EpicTest {
         subtask1.setStatus(Status.IN_PROGRESS);
         subtask2.setStatus(Status.IN_PROGRESS);
         epic.checkEpicStatusInProgresss();
-        assertEquals(Status.IN_PROGRESS,epic.getStatus());  //проверка статуса эпика на IN_PROGRESS +
+        assertEquals(Status.IN_PROGRESS, epic.getStatus());  //проверка статуса эпика на IN_PROGRESS +
     }
 
 }

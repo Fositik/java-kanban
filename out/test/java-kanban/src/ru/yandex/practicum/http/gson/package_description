@@ -1,0 +1,125 @@
+Классы `JsonDeserializer` используются в языке программирования Java для десериализации (преобразования)
+объектов JSON в эквивалентные объекты Java. JSON (JavaScript Object Notation) - это текстовый формат обмена данными,
+который используется для представления объектов и массивов в JavaScript и других языках программирования.
+
+Класс `JsonDeserializer` является абстрактным классом из библиотеки `Gson`, который позволяет создавать
+пользовательские десериализаторы для преобразования JSON в объекты Java. Для использования `JsonDeserializer`
+вам необходимо создать свой класс, который расширяет `JsonDeserializer` и реализует метод `deserialize`,
+который выполняет фактическую десериализацию.
+
+Вот пример класса, который использует `JsonDeserializer` для десериализации объекта JSON в эквивалентный объект Java:
+
+```java
+public class Person {
+    private String name;
+    private int age;
+
+    public Person(String name, int age) {
+        this.name = name;
+        this.age = age;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public int getAge() {
+        return age;
+    }
+
+    public static class PersonDeserializer implements JsonDeserializer<Person> {
+        @Override
+        public Person deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context)
+        throws JsonParseException {
+            JsonObject jsonObject = json.getAsJsonObject();
+            String name = jsonObject.get("name").getAsString();
+            int age = jsonObject.get("age").getAsInt();
+            return new Person(name, age);
+        }
+    }
+}
+```
+
+В этом примере класс `Person` представляет собой объект, который имеет поля `name` и `age`,
+а класс `PersonDeserializer` расширяет `JsonDeserializer<Person>` и реализует метод `deserialize`,
+который преобразует объект JSON в эквивалентный объект Java типа `Person`.
+
+В данном примере метод `deserialize` получает объект JSON (`JsonElement json`) и преобразует его в объект `JsonObject`.
+Затем он использует методы `get` объекта `JsonObject`, чтобы получить значения полей `name` и `age`
+и создает новый объект `Person` на основе этих значений.
+
+Таким образом, `JsonDeserializer` является полезным инструментом для десериализации JSON-объектов в объекты Java.
+
+
+------------------------------------------------------------------------------------------------------------------------
+
+
+
+Классы `JsonSerializer` и `JsonDeserializer` являются частями библиотеки Gson для языка Java.
+Они позволяют пользователям создавать собственные сериализаторы и десериализаторы, чтобы преобразовывать объекты
+Java в формат JSON и наоборот.
+
+`JsonSerializer` - это абстрактный класс, который используется для создания пользовательских сериализаторов,
+которые могут преобразовывать объекты Java в формат JSON. Для создания своего сериализатора, нужно унаследоваться
+от этого класса и реализовать метод `serialize()`, который получает объект и записывает его в формат JSON.
+
+`JsonDeserializer` - это абстрактный класс, который используется для создания пользовательских десериализаторов,
+которые могут преобразовывать JSON объекты в эквивалентные Java объекты. Для создания своего десериализатора,
+нужно унаследоваться от этого класса и реализовать метод `deserialize()`, который получает JSON объект
+и возвращает эквивалентный Java объект.
+
+Вот пример класса, который использует `JsonDeserializer` для десериализации JSON объекта в эквивалентный Java объект:
+
+```java
+public class Person {
+    private String name;
+    private int age;
+
+    public Person(String name, int age) {
+        this.name = name;
+        this.age = age;
+    }
+
+    public static class PersonDeserializer implements JsonDeserializer<Person> {
+        @Override
+        public Person deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context)
+        throws JsonParseException {
+            JsonObject jsonObject = json.getAsJsonObject();
+            String name = jsonObject.get("name").getAsString();
+            int age = jsonObject.get("age").getAsInt();
+            return new Person(name, age);
+        }
+    }
+}
+```
+
+В этом примере мы создали класс `Person`, который имеет два поля `name` и `age`.
+Затем мы создали внутренний класс `PersonDeserializer`, который реализует интерфейс `JsonDeserializer<Person>`.
+В методе `deserialize()` мы получаем JSON объект и извлекаем из него значения полей `name` и `age`,
+чтобы создать эквивалентный Java объект `Person`.
+
+
+------------------------------------------------------------------------------------------------------------------------
+
+
+
+You can do both. Which one you pick depends really on potential performance impact,
+and how much code are willing to write.
+
+Deserializers are more expensive. That is because the input to deserializer is a json tree, and GSon will have to
+create a full JsonElement subtree for the element that matches your class, before it can pass it to your deserializer.
+If your model has a lot of nesting, that cost increases. For plain objects, it will be negligible.
+
+It seems that you will know which class to create based on the value of type property that will
+be included in target object. Your deserializer will need to
+
+-look into the passed JsonElement object, read the type property, determine the type
+-call context.deserialize() with the class and the same element that was passed to you
+-throw an error if type was missing or invalid
+
+Your type adapter will have to be more complex. The input to the type adapter is a stream, not an element/subtree.
+You can load the next value entirely from the stream, parse it, and then do exactly what deserializer did,
+which doesn't make sense and you can just use the deserializer instead. Alternatively, you can read the stream,
+see what properties there are, save them into local variables, until you get to the type property
+(you can't predict its location), then finish reading the remainder of the properties,
+and create your final Gold/Silver objects based on type, and all the properties read and saved.

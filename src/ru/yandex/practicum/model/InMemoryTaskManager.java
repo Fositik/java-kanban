@@ -24,6 +24,9 @@ public class InMemoryTaskManager implements TaskManager {
     //TreeSet для хранения отсортированного списка задач по времени
     protected TreeSet<Task> sortedTasks;
 
+    //public InMemoryTaskManager(HistoryManager historyManager){
+//    this.historyManager = h
+//}
     @Override
     //метод для добавления простой задачи
     public void addSimpleTask(Task task) {
@@ -188,14 +191,8 @@ public class InMemoryTaskManager implements TaskManager {
             value.setName(subtask.getName());
             value.setStatus(subtask.getStatus());
             isNotIntersection(subtask);
-//            if (
-//                    subtask.getStartTime() != null
-//                    && subtask.getDuration() != null
-//            ) {
             value.setStartTime(subtask.getStartTime());
             value.setDuration(subtask.getDuration());
-//            } else
-//                subtask.resetStartTimeAndDuration();
             //Вызываем метод для проверки статуса эпика на DONE
             epics.get(value.getEpic().getId()).checkEpicStatusDone();
             //Если статус эпика не IN_PROGRESS, то вызываем метод для проверки на IN_PROGRESS
@@ -315,8 +312,6 @@ public class InMemoryTaskManager implements TaskManager {
             task.resetStartTimeAndDuration();
         }
     }
-
-
 
     //Понадобилось, чтобы в одном из тестов вывести историю просмотров задач
     public List<Task> historyList() {
