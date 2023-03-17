@@ -24,7 +24,7 @@ import com.sun.net.httpserver.HttpServer;
  * транзакций соответственно.
  */
 public class KVServer {
-    public static final int PORT = 8091;
+    public static final int PORT = 8078;
     private final String apiToken;
     private final HttpServer server;
     private final Map<String, String> data = new HashMap<>();
@@ -107,7 +107,6 @@ public class KVServer {
                 h.sendResponseHeaders(405, 0);
             }
         } finally {
-            System.out.println("блок finally");
             h.close();
         }
     }

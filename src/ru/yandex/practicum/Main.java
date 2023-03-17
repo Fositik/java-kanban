@@ -17,9 +17,9 @@ import java.time.Duration;
 import java.time.LocalDateTime;
 
 public class Main {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         KVServer kvServer;
-        try {
+
             Gson gson = new GsonBuilder()
                     .registerTypeAdapter(Subtask.class, new SubtaskJsonSerializer())
                     .registerTypeAdapter(Epic.class, new EpicJsonSerializer())
@@ -28,7 +28,7 @@ public class Main {
                     .create();
             kvServer = new KVServer();
             kvServer.start();
-            //  HistoryManager historyManager = Managers.getDefaultHistory();
+
             TaskManager httpTaskManager = Managers.getDefault("http://localhost:" + KVServer.PORT);
 
             Task takeExams = new Task("Сдать Экзамены", LocalDateTime.now(), Duration.ofMinutes(30));
@@ -83,10 +83,5 @@ public class Main {
             System.out.println("All subtasks" + gson.toJson(httpTaskManager.getAllSubtasksByEpic(doTheLessons.getId())));
             System.out.println(httpTaskManager);
             kvServer.stop();
-
-        } catch (IOException e) {
-            e.getMessage();
-        }
-
     }
 }
